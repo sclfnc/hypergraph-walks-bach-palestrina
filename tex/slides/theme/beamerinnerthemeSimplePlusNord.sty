@@ -1,0 +1,452 @@
+%% SimplePlusNord: inner theme, the shapes and the commands.
+%% Fork of SimplePlus by Pin-Yen Huang (https://github.com/pm25/SimplePlus-BeamerTheme), Unlicense.
+
+%% ---------------------------------------------------------------------------
+%% Geometry, and the switch that makes one slide dark
+%% ---------------------------------------------------------------------------
+
+% The side margins are 1/16 of the width of the page (6.25%, 1cm at 16:10, which is also the margin
+% that Beamer and Metropolis use). As a part of the page, and not a length in em, they do not change
+% with the size of the type. The title, the body, the sources and the page number share them.
+\setbeamersize{text margin left=\dimexpr\paperwidth/16\relax,text margin right=\dimexpr\paperwidth/16\relax}
+\setbeamertemplate{navigation symbols}{}
+
+% The title band starts at the top edge of the page and the progress strip ends at the bottom edge.
+% Beamer measures the footline and keeps that much room (plus 4pt of its own) under \textheight, so
+% the body area runs from the band to the footline.
+
+% Beamer centres the body of a frame with 1 part of free space above it and 1.5 below, which leaves
+% it a little high. Here the two are equal. Beamer sets this key again at the start of each frame.
+\define@key{beamerframe}{c}[true]{%
+    \beamer@frametopskip=0pt plus 1fill\relax
+    \beamer@framebottomskip=0pt plus 1fill\relax
+    \beamer@frametopskipautobreak=0pt plus .5\paperheight\relax
+    \beamer@framebottomskipautobreak=0pt plus .5\paperheight\relax}
+
+% The background and the bottom of a slide are drawn after the body of its frame, outside the
+% group of the body: a setting made inside the frame cannot reach them. The title slide and
+% \darkslide therefore raise a global flag, which is lowered again when the next frame starts.
+\newif\ifsplusnord@dark
+\addtobeamertemplate{background canvas}{}{%
+    \ifsplusnord@dark\hskip-\paperwidth\color{nord0}\vrule width\paperwidth height\paperheight\fi}
+
+% Optional: \darkslide, right after \begin{frame}, gives any slide the dark look of the title slide.
+\newcommand\darkslide{%
+    \global\splusnord@darktrue
+    \setbeamercolor{normal text}{fg=nord6}\setbeamercolor{structure}{fg=nord6}%
+    \setbeamercolor{section in toc}{fg=nord6}\setbeamercolor{subsection in toc}{fg=nord4}%
+    \setbeamercolor{item}{fg=nord6}%
+    % This slide has no footline, but \textheight stops above where it would be: a skip of
+    % \footheight moves the middle of the body down by half of it, to the middle of the slide
+    \vspace*{\footheight}%
+    \color{nord6}}
+
+%% ---------------------------------------------------------------------------
+%% Title slide: dark, title on the left, who and when at the bottom right
+%% ---------------------------------------------------------------------------
+
+\setbeamertemplate{title page}{%
+    \global\splusnord@darktrue
+    \vspace{8em}
+    \begingroup
+    \begin{beamercolorbox}[sep=0pt,left]{title}
+        \usebeamerfont{title}\inserttitle\par
+        \ifx\insertsubtitle\@empty\else
+            \vskip0.25em
+            {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}
+        \fi
+    \end{beamercolorbox}
+    \vskip1em
+    \hbox{\color{nord10}\vrule width 3em height 3pt}
+    \vskip0.75em
+    {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+    % filll wins over the vfill that Beamer adds above and below a centred frame
+    \vskip0pt plus 1filll
+    \begin{beamercolorbox}[sep=0pt,right]{author}
+        \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \vskip0.25em
+    \begin{beamercolorbox}[sep=0pt,right]{institute}
+        \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \vskip0.5em
+    \begin{beamercolorbox}[sep=0pt,right]{date}
+        \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}
+    % the strip of the footline is reserved under the text even though this slide has none
+    \vskip\dimexpr\beamer@leftmargin-\footheight\relax
+    \endgroup}
+
+%% ---------------------------------------------------------------------------
+%% Every other slide: the title in a dark band, a progress strip at the bottom
+%% ---------------------------------------------------------------------------
+
+% A dark slide has no band: what it says is already in its body
+\setbeamertemplate{frametitle}{%
+    \ifsplusnord@dark\else
+    % The band takes the first 15% of the page, with the title in the middle (ht and dp put the
+    % baseline 7pt under the middle of the band). The glue that TeX puts between two boxes (here
+    % \lineskip, as the band is higher than \baselineskip) would push the band down: it is left out.
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0.1\paperheight,dp=0.05\paperheight,left]{frametitle}
+        \leftskip=\beamer@leftmargin
+        \rightskip=\beamer@rightmargin
+        \usebeamerfont{frametitle}\insertframetitle\par
+    \end{beamercolorbox}%
+    \fi}
+
+% \source{...}: an entry in the source line at the bottom left, level with the page number.
+% Several calls on one slide are joined with semicolons.
+\newcount\splusnord@nsrc
+\def\splusnord@source{}
+\newcommand\source[1]{%
+    \ifnum\splusnord@nsrc=0
+        \gdef\splusnord@source{#1}%
+    \else
+        \g@addto@macro\splusnord@source{; #1}%
+    \fi
+    \global\advance\splusnord@nsrc by 1\relax}
+
+% What a new frame starts from: a light slide. The sources are cleared for each slide of the frame
+% and not only for the frame, because a frame with overlays runs its body once for each slide.
+\AddToHook{env/frame/begin}{\global\splusnord@darkfalse}
+\AddToHook{env/beamer@frameslide/begin}{\gdef\splusnord@source{}\global\splusnord@nsrc=0\relax}
+
+% Page number and sources above a strip that fills up with the deck. The title slide has neither.
+\setbeamertemplate{footline}{%
+    \ifsplusnord@dark\else
+    \vbox{%
+        \hbox to\paperwidth{\hskip\beamer@leftmargin
+            % the sources stop 6em short of the number: a longer list is reported as overfull
+            \hbox to\dimexpr\paperwidth-2\beamer@leftmargin-6em\relax{%
+                \usebeamerfont{source}\usebeamercolor[fg]{source}%
+                \ifnum\splusnord@nsrc>0
+                    \ifnum\splusnord@nsrc>1 Sources\else Source\fi: \splusnord@source
+                \fi\hfill}\hfill
+            {\usebeamerfont{page number current}\usebeamercolor[fg]{page number current}\insertframenumber}%
+            {\usebeamerfont{page number current}\usebeamercolor[fg]{page number total}\thinspace/\thinspace}%
+            {\usebeamerfont{page number total}\usebeamercolor[fg]{page number total}\inserttotalframenumber}%
+            \kern\beamer@rightmargin}%
+        \nointerlineskip\vskip3pt
+        \hbox to\paperwidth{%
+            {\color{nord4}\vrule width\paperwidth height 3pt}%
+            \hskip-\paperwidth
+            {\color{nord10}\vrule height 3pt
+                width \dimexpr\paperwidth*\insertframenumber/%
+                    \ifnum\inserttotalframenumber>0 \inserttotalframenumber\else 1\fi\relax}%
+            \hss}}%
+    \fi}
+
+% \fade[percent]{...} lightens everything inside by mixing every colour with the slide colour (nord6,
+% or nord0 on a dark slide)
+% (default 40: 40% of the colour stays). Beamer's own \opaqueness does this but only inside
+% \uncover, so the colour mixin behind it is used directly. Colours set inside the argument fade too.
+\newcommand\fade[2][40]{{%
+    \edef\beamer@colorhook{!#1!\ifsplusnord@dark nord0\else nord6\fi\beamer@colorhook}%
+    \def\beamer@pgfextension{!#1opaque}%
+    \color{.}#2}}
+
+%% ---------------------------------------------------------------------------
+%% Boxes: tcolorbox draws them because Beamer fixes the corner radius in a macro
+%% ---------------------------------------------------------------------------
+
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins}
+
+% #1 is empty, " alerted" or " example": it picks the matching Beamer colours
+\newcommand\splusnord@boxbegin[1]{%
+    \usebeamercolor[bg]{block title#1}\colorlet{splusnord@tbg}{bg}%
+    \usebeamercolor[fg]{block title#1}\colorlet{splusnord@tfg}{fg}%
+    \usebeamercolor[bg]{block body#1}\colorlet{splusnord@bbg}{bg}%
+    \usebeamercolor[fg]{block body#1}\colorlet{splusnord@bfg}{fg}%
+    \begin{tcolorbox}[enhanced,arc=2pt,boxrule=0.3pt,colframe=splusnord@tbg,
+        colback=splusnord@bbg,colbacktitle=splusnord@tbg,coltitle=splusnord@tfg,
+        colupper=splusnord@bfg,title={\insertblocktitle},
+        fonttitle=\usebeamerfont*{block title#1},fontupper=\usebeamerfont*{block body#1},
+        left=3pt,right=3pt,top=2pt,bottom=2pt,before skip=4pt,after skip=4pt]}
+\setbeamertemplate{block begin}{\splusnord@boxbegin{}}
+\setbeamertemplate{block alerted begin}{\splusnord@boxbegin{ alerted}}
+\setbeamertemplate{block example begin}{\splusnord@boxbegin{ example}}
+\setbeamertemplate{block end}{\end{tcolorbox}}
+\setbeamertemplate{block alerted end}{\end{tcolorbox}}
+\setbeamertemplate{block example end}{\end{tcolorbox}}
+
+% The names an author uses. Not "box": an environment of that name would redefine TeX's \box.
+\newenvironment<>{infobox}[1]{\begin{block}#2{#1}}{\end{block}}
+\newenvironment<>{alertbox}[1]{\begin{alertblock}#2{#1}}{\end{alertblock}}
+\newenvironment<>{examplebox}[1]{\begin{exampleblock}#2{#1}}{\end{exampleblock}}
+
+% Theorems, definitions, lemmas and examples are boxes. A proof has none of its own: it is run-in
+% text, so that it can sit inside the box of its theorem.
+\setbeamertemplate{proof begin}{%
+    \par\vskip\smallskipamount\noindent{\bfseries\itshape\insertproofname}\ }
+\setbeamertemplate{proof end}{\par}
+
+% With a star, a theorem-like environment is set in the text and not in a box: a bold label, then the
+% text, as in an article. Theorems, lemmas and corollaries have italic text, definitions and
+% examples upright text (the convention of amsthm). \begin{theorem*}[Name] takes the same name.
+\newcommand\splusnord@starred[3]{%
+    \newenvironment{#1*}[1][]{%
+        \par\vskip\smallskipamount\noindent
+        {\bfseries #2\ifx\relax##1\relax\else\ (##1)\fi.}\ #3}%
+        {\par\vskip\smallskipamount}}
+\splusnord@starred{theorem}{Theorem}{\itshape}
+\splusnord@starred{lemma}{Lemma}{\itshape}
+\splusnord@starred{corollary}{Corollary}{\itshape}
+\splusnord@starred{fact}{Fact}{\itshape}
+\splusnord@starred{definition}{Definition}{\normalfont}
+\splusnord@starred{example}{Example}{\normalfont}
+
+%% ---------------------------------------------------------------------------
+%% Lists, tables, captions, figures and references
+%% ---------------------------------------------------------------------------
+
+\setbeamertemplate{itemize item}{\usebeamercolor[fg]{item}\raisebox{0.9pt}{\tiny$\blacktriangleright$}}
+\setbeamertemplate{itemize subitem}{\usebeamercolor[fg]{item}\raisebox{0.7pt}{\tiny$\triangleright$}}
+
+% Tables: roomy rows and columns, hairlines (\hline) between rows, and under the header the line
+% \headrule. There is no rule above or below the table. The line sits 0.5pt under the middle of
+% the gap: by the baseline of the header it belongs in the middle, by its descenders lower.
+% colortbl colours the rules, booktabs gives \specialrule
+\RequirePackage{colortbl}
+\RequirePackage{booktabs}
+\AddToHook{env/table/begin}{%
+    \renewcommand\arraystretch{1.4}\setlength\tabcolsep{9pt}\setlength\arrayrulewidth{0.5pt}%
+    \arrayrulecolor{nord4}}
+\newcommand\headrule{\arrayrulecolor{nord3}\specialrule{1pt}{0.5pt}{-0.5pt}\arrayrulecolor{nord4}}
+\setbeamertemplate{caption}[numbered]
+
+% The label of a reference is its number, as in the numeric citations of the text
+\setbeamertemplate{bibliography item}[text]
+
+% \roundedgraphics[options]{file}: an opaque picture with rounded corners (3pt), clipped and not just
+% framed. A picture with a transparent background needs only \includegraphics.
+\newbox\splusnord@imagebox
+\newcommand\roundedgraphics[2][]{%
+    \setbox\splusnord@imagebox=\hbox{\includegraphics[#1]{#2}}%
+    \begin{tikzpicture}
+        \clip[rounded corners=3pt] (0,0) rectangle (\wd\splusnord@imagebox,\ht\splusnord@imagebox);
+        \node[anchor=south west,inner sep=0pt,outer sep=0pt] at (0,0) {\box\splusnord@imagebox};
+    \end{tikzpicture}}
+
+%% ---------------------------------------------------------------------------
+%% Overview
+%% ---------------------------------------------------------------------------
+
+\setbeamertemplate{section in toc}{\leavevmode\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{%
+    \leavevmode\leftskip=0.8em\inserttocsubsection\par\vskip0.25em}
+
+% Optional: \tocnumbers numbers the entries (1., 1.1). In the preamble it holds for the whole deck,
+% inside a frame for that slide only.
+\newcommand\tocnumbers{%
+    \setbeamertemplate{section in toc}[sections numbered]%
+    \setbeamertemplate{subsection in toc}{%
+        \leavevmode\leftskip=3.2em
+        \rlap{\hskip-2em\inserttocsectionnumber.\inserttocsubsectionnumber}%
+        \inserttocsubsection\par}}
+
+% \extrasection{Title} is a \section that the overviews keep apart, for the references: it is the
+% last entry, in blue, and it gets no column and no section slide of its own. Its number goes into
+% the .aux file for the next run, like the number of sections.
+\newif\ifsplusnord@extra
+\providecommand\splusnordextra{0}
+\newcommand\extrasection[1]{%
+    \global\splusnord@extratrue
+    \section{#1}%
+    \global\splusnord@extrafalse
+    \immediate\write\@auxout{\string\gdef\string\splusnordextra{\the\c@section}}}
+
+% The entry of the extra section. The link of an entry paints it in its own colour, so the colour
+% is set again inside the link.
+\newcommand\splusnord@extraentry{{%
+    \setbeamercolor{item}{fg=nord9}%
+    \def\hyperlink##1##2{\beamer@orighyperlink{##1}{\color{nord9}\relax##2}}%
+    \color{nord9}\usebeamertemplate{itemize item}\ \inserttocsection}}
+
+% \sectionlist: the sections one under the other, as a bulleted list, for the first overview of a deck
+% (the subsections are left out). It is meant for a \darkslide, like the other overviews.
+% The list is in a box: the table of contents of Beamer ends with a \vfill, which in a frame that is
+% centred shares the free space with the frame and leaves the list high on the slide. In a box
+% a \vfill takes no space. The \vskip that ends the last entry balances the space that the table of
+% contents leaves above the first one, so that the list is at the middle of the slide.
+\newcommand\sectionlist{\vbox{%
+    \setbeamertemplate{section in toc}{%
+        \ifnum\inserttocsectionnumber=\splusnordextra\vskip1.2em\fi
+        \leavevmode
+        \ifnum\inserttocsectionnumber=\splusnordextra
+            \splusnord@extraentry
+        \else
+            \usebeamertemplate{itemize item}\ \inserttocsection
+        \fi
+        \par\vskip0.6em}%
+    \tableofcontents[hideallsubsections]}}
+
+% \sectioncolumns: the overview with one column per section, for decks of a few sections.
+% \sectioncolumns[current] keeps the running section as it is and fades the others. The number of
+% sections is known only at the end of a run, so it goes into the .aux file for the next run
+% (the first run shows one column).
+\newcount\splusnord@i
+\AtEndDocument{\immediate\write\@auxout{\string\gdef\string\splusnordnsec{\the\c@section}}}
+\providecommand\splusnordnsec{1}
+\newcount\splusnord@ncol
+\newcommand\sectioncolumns[1][all]{\vbox{%
+    % 1em of space above moves the list down by half of it, to the middle of the slide (measured)
+    \vskip1em
+    \def\splusnord@mode{#1}%
+    \def\splusnord@current{current}%
+    \splusnord@ncol=\splusnordnsec\relax
+    \ifnum\splusnordextra>0 \advance\splusnord@ncol by -1\fi
+    \begin{columns}[T,onlytextwidth]%
+        \splusnord@i=1\relax%
+        \@whilenum\splusnord@i<\numexpr\splusnord@ncol+1\relax\do{%
+            \begin{column}{\dimexpr0.97\textwidth/\splusnord@ncol\relax}%
+                \begingroup%
+                \ifsplusnord@dark
+                    \setbeamercolor{section in toc}{fg=nord6}%
+                    \setbeamercolor{subsection in toc}{fg=nord4}%
+                \else
+                    \setbeamercolor{section in toc}{fg=nord3}%
+                    \setbeamercolor{subsection in toc}{fg=nord3}%
+                \fi
+                \ifx\splusnord@mode\splusnord@current%
+                    \ifnum\splusnord@i=\value{section}%
+                        \tableofcontents[sections={\the\splusnord@i}]%
+                    \else%
+                        \fade{\tableofcontents[sections={\the\splusnord@i}]}%
+                    \fi%
+                \else%
+                    \tableofcontents[sections={\the\splusnord@i}]%
+                \fi%
+                \endgroup%
+            \end{column}%
+            \global\advance\splusnord@i by 1\relax}%
+    \end{columns}%
+    \ifnum\splusnordextra>0
+        \par\vskip1.2em
+        \begingroup
+            \setbeamertemplate{section in toc}{\leavevmode\splusnord@extraentry\par}%
+            \ifx\splusnord@mode\splusnord@current
+                \ifnum\value{section}=\splusnordextra
+                    \tableofcontents[sections={\splusnordextra},hideallsubsections]%
+                \else
+                    \fade{\tableofcontents[sections={\splusnordextra},hideallsubsections]}%
+                \fi
+            \else
+                \tableofcontents[sections={\splusnordextra},hideallsubsections]%
+            \fi
+        \endgroup
+    \fi}}
+
+%% ---------------------------------------------------------------------------
+%% Code boxes, which use the listings package through tcolorbox
+%% ---------------------------------------------------------------------------
+
+% Code can only be read from a frame that Beamer reads as typed, a "fragile" one, and Beamer decides
+% that from the options of \begin{frame}, before it has read the box. So every frame is made fragile:
+% [fragile] is added to its options before Beamer looks at them. This costs a little compile time
+% and means that \end{frame} must stand alone on its line; the option nofragile switches it off.
+\ifsplusnord@nofragile\else
+    \makeatletter
+    % Options given by the author go into one bracket with fragile: Beamer reads [a][b] as its old syntax
+    \def\splusnord@frameopt[#1]{%
+        \expandafter\gdef\expandafter\beamer@frameoptions\expandafter{\beamer@frameoptions[#1,fragile]}%
+        \beamer@copewithframeenv}
+    \def\splusnord@addfragile#1fragile#2\relax{%
+        \ifblank{#2}%
+        {\expandafter\gdef\expandafter\beamer@frameoptions\expandafter{\beamer@frameoptions[fragile]}}{}}
+    \def\beamer@copewithframeenv{%
+        \@ifnextchar<{\beamer@@frameenvspec}%
+        {\@ifnextchar[{\splusnord@frameopt}%
+            {\expandafter\splusnord@addfragile\beamer@frameoptions fragile\relax
+             \expandafter\beamer@checkforverbatim\beamer@frameoptions containsverbatim\relax}}}
+\fi
+
+\tcbuselibrary{listings}
+
+% Julia is not among the languages that listings knows
+\lstdefinelanguage{Julia}{
+    morekeywords={abstract,baremodule,begin,break,catch,const,continue,do,else,elseif,end,export,
+        false,finally,for,function,global,if,import,in,let,local,macro,module,mutable,quote,
+        return,struct,true,try,using,where,while},
+    sensitive=true,morecomment=[l]{\#},morecomment=[n]{\#=}{=\#},morestring=[b]",
+    morestring=[b]'}
+
+% \code{text} and \code[language]{text}: code inside a sentence, with no box. The typewriter font is
+% a little smaller than the text font at the same size (x-height 4.72pt against 4.86pt at 10.95pt),
+% so its size is set so that the lowercase letters are as tall as the ones around. With a language
+% the code is coloured as in a code box. The text goes through \detokenize: write it as it appears,
+% but not % or #, and keep the braces balanced. A command name is followed by a space (\begin {x}),
+% which is how \detokenize prints it.
+\newdimen\splusnord@xheight
+\newdimen\splusnord@size
+\newcommand\splusnord@codefont{%
+    \splusnord@xheight=\fontdimen5\font
+    \ttfamily\selectfont
+    \splusnord@size=\dimexpr\f@size pt*\numexpr\splusnord@xheight*1000/\fontdimen5\font\relax/1000\relax
+    \fontsize{\strip@pt\splusnord@size}{\f@baselineskip}\selectfont}
+\newcommand\code[2][]{{%
+    \ifx\relax#1\relax
+        \splusnord@codefont\detokenize{#2}%
+    \else
+        % the text is read again as if it were typed in the document, so that listings sees it
+        % as it reads \lstinline anywhere, spaces included; the style is defined further down
+        \endlinechar=-1
+        \edef\splusnord@call{\noexpand\lstinline[style=splusnordinline,language=#1]|\detokenize{#2}|}%
+        \expandafter\scantokens\expandafter{\splusnord@call}%
+    \fi}}
+
+% The look of the code inside every box, as a listings style: tcolorbox's "listing options" replaces
+% the options set before it, so a language chosen later must not wipe them out.
+% Of the Nord accents only nord10 and nord11 are dark enough to read on the box (3.5:1): keywords
+% are blue, strings red, comments grey.
+\lstdefinestyle{splusnord}{basicstyle=\ttfamily\footnotesize\color{nord0},
+    aboveskip=0pt,belowskip=0pt,breaklines=true,columns=fullflexible,
+    keywordstyle=\color{nord10},
+    stringstyle=\color{nord11},commentstyle=\color{nord3}\itshape}
+
+\lstdefinestyle{splusnordinline}{style=splusnord,keepspaces=true,basicstyle=\splusnord@codefont\color{nord0}}
+
+% A code box has no border and a fill a little darker than the other boxes (8% nord3 over the slide)
+% to hold its shape by itself.
+\tcbset{splusnord code/.style={enhanced,arc=2pt,boxrule=0pt,frame hidden,
+    colback=nord6!92!nord3,colupper=nord0,boxsep=1pt,
+    left=3pt,right=3pt,top=1pt,bottom=1pt,before skip=4pt,after skip=4pt,
+    listing options={style=splusnord,language={[LaTeX]TeX},texcsstyle=*\color{nord10}}}}
+
+% Pseudocode: set in the font of the deck and not in typewriter, as books do (CLRS, for one): keywords
+% in bold blue, comments in grey italic, <- as an arrow, and $...$ for the maths.
+\lstdefinelanguage{Pseudocode}{
+    morekeywords={if,then,else,elseif,end,for,each,to,downto,in,while,do,repeat,until,return,
+        function,procedure,and,or,not,true,false,input,output,break,continue,let,set,print},
+    sensitive=false,morecomment=[l]{//},morestring=[b]",
+    literate={<-}{{$\leftarrow$}}1 {<=}{{$\leq$}}1 {>=}{{$\geq$}}1 {!=}{{$\neq$}}1}
+% Line numbers, for code boxes and pseudocode
+\lstdefinestyle{splusnordnumbered}{style=splusnord,
+    numbers=left,numberstyle=\tiny\color{nord3},numbersep=6pt,xleftmargin=1.3em}
+\lstdefinestyle{splusnordpseudo}{style=splusnordnumbered,basicstyle=\sffamily\footnotesize\color{nord0},
+    keywordstyle=\color{nord10}\bfseries,mathescape=true,showstringspaces=false,keepspaces=true}
+
+% The name of the language in a light hue at the top right of a code box, as a reminder of what
+% the box holds (\splusnord@lang is set by the key below). At this lightness (nord3 at 55%
+% over nord6, about 2.4:1) it is a hint and not text to read.
+\newcommand\splusnord@lang{}
+\tcbset{splusnord label/.style={overlay={\node[anchor=north east,inner sep=2pt,
+    font=\fontsize{6}{7}\selectfont\sffamily,text=nord3!55!nord6]
+    at ([xshift=-2pt,yshift=-1pt]frame.north east) {\splusnord@lang};}},
+  % in a code box every language is numbered code; pseudocode in typewriter gets the arrows and
+  % the formulas of the pseudocode language
+  splusnord lang/.code={\gdef\splusnord@lang{#1}%
+    \ifstrequal{#1}{Pseudocode}%
+      {\tcbset{listing options={style=splusnordnumbered,language=Pseudocode,mathescape=true,
+          keepspaces=true,keywordstyle=\color{nord10}\bfseries}}}%
+      {\tcbset{listing options={style=splusnordnumbered,language=#1}}}}}
+
+% codeonly: LaTeX code that is not run. codeblock{language}: code in another language (C, C++,
+% Julia, Python, Pseudocode, ...) in typewriter, numbered and labelled with its language. Like the
+% other boxes they have no border.
+\newtcblisting{codeonly}{splusnord code,listing only}
+\newtcblisting{codeblock}[1]{splusnord code,splusnord label,listing only,splusnord lang={#1}}
+% pseudocode: pseudocode in the font of the deck; codeblock{Pseudocode} is the typewriter version
+\newtcblisting{pseudocode}{splusnord code,splusnord label,listing only,splusnord lang={Pseudocode},
+    listing options={style=splusnordpseudo,language=Pseudocode}}

@@ -1,0 +1,31 @@
+%% SimplePlusNord: font theme.
+%% Fork of SimplePlus by Pin-Yen Huang (https://github.com/pm25/SimplePlus-BeamerTheme), Unlicense.
+
+% Everything is sans serif and light unless a rule below says otherwise; the
+% other fonts inherit from "structure".
+\setbeamerfont{structure}{series=\mdseries,family=\sffamily}
+
+% Title slide
+% the title of the deck is one step larger than the title of a slide (24.9pt against 20.7pt)
+\setbeamerfont{title}{parent=structure,size=\Huge,series=\bfseries}
+\setbeamerfont{author}{parent=structure,size=\large,series=\mdseries}
+\setbeamerfont{date}{parent=structure,size=\scriptsize,series=\mdseries}
+
+% The title of every other slide: clearly larger than the text (20.7pt against 10.95pt), so that
+% it reads as the title
+\setbeamerfont{frametitle}{parent=structure,size=\huge,series=\bfseries}
+
+% Overview
+\setbeamerfont{section in toc}{parent=structure,size=\large,series=\bfseries}
+\setbeamerfont{subsection in toc}{parent={section in toc},size=\small,series=\mdseries}
+
+% Text elements: captions, boxes and highlighted text
+\setbeamerfont{caption}{size=\footnotesize}
+\setbeamerfont{block title}{parent={structure,block body},size=\normalsize,series=\bfseries}
+\setbeamerfont{alerted text}{series=\bfseries}
+
+% Bottom of the slide. The sizes are in points, as a size command is too coarse
+% for text that has to stay quiet: 6.5pt on a 7.5pt line
+\setbeamerfont{page number current}{parent=structure,size*={6.5}{7.5}}
+\setbeamerfont{page number total}{parent=structure,size*={6.5}{7.5}}
+\setbeamerfont{source}{parent=structure,size*={6.5}{7.5}}

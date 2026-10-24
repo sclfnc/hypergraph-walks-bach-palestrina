@@ -1,0 +1,110 @@
+% Talk, 15 minutes: the path to the research question, in the order of the e-mail to the tutors.
+% Compile from this folder: lualatex talk.tex, bibtex talk, lualatex talk.tex (twice).
+% The talk of 2026-10-19 that presented the research question; the theme is shared in ../theme/.
+\makeatletter\def\input@path{{../theme/}}\makeatother
+\documentclass[aspectratio=1610,xcolor=dvipsnames]{beamer}
+\usetheme{SimplePlusNord}
+
+\usepackage{graphicx}
+\usepackage{musixtex}
+\usepackage{fontawesome5}
+\usepackage{simpleicons}  % the logos of LaTeX, GitHub and Font Awesome on the last slide  % one micro score, the parallel fifths: \startextract needs no musixflx pass
+\usepackage[numbers,sort&compress]{natbib}  % consecutive citation numbers become ranges, [2--14]
+\graphicspath{{figures/}{../../figures/}}  % this talk's own, then the figures the notebooks write
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\input{info}
+\titlegraphic{}  % no line under the title
+\institute{Advanced Laboratory of Complex Network Analysis\\University of Pisa}  % two lines on the cover of the talk
+\input{sections/symbols}
+
+% Footnotes in a quiet grey: the text and the rule above them, lighter than the body text.
+\setbeamercolor{footnote}{fg=nord3!75!nord6}
+\setbeamercolor{footnote mark}{fg=nord3!75!nord6}
+\makeatletter
+\renewcommand\footnoterule{\kern-3\p@{\color{nord3!35!nord6}\hrule\@width .35\columnwidth\@height 0.5\p@}\kern 2.5\p@}
+\makeatother
+
+% The theme leaves the footline out of every dark slide. Here the dark slides of the talk carry the page number
+% and the progress strip too; only the title page, which is not counted in the numbering (frame number 0), stays without. The strip that is still to come is
+% nord3 on a dark slide: the light grey of the other slides would be a bright line on it.
+\makeatletter
+\newcommand\talk@footline{%
+    \vbox{%
+        \hbox to\paperwidth{\hskip\beamer@leftmargin
+            \hbox to\dimexpr\paperwidth-2\beamer@leftmargin-6em\relax{%
+                \usebeamerfont{source}\usebeamercolor[fg]{source}%
+                \ifnum\splusnord@nsrc>0
+                    \ifnum\splusnord@nsrc>1 Sources\else Source\fi: \splusnord@source
+                \fi\hfill}\hfill
+            {\usebeamerfont{page number current}\usebeamercolor[fg]{page number current}\insertframenumber}%
+            {\usebeamerfont{page number current}\usebeamercolor[fg]{page number total}\thinspace/\thinspace}%
+            {\usebeamerfont{page number total}\usebeamercolor[fg]{page number total}\inserttotalframenumber}%
+            \kern0.4cm}%  % the number at the far right edge, not at the margin of the text
+        \nointerlineskip\vskip3pt
+        \hbox to\paperwidth{%
+            {\ifsplusnord@dark\color{nord3}\else\color{nord4}\fi\vrule width\paperwidth height 3pt}%
+            \hskip-\paperwidth
+            {\color{nord10}\vrule height 3pt
+                width \dimexpr\paperwidth*\insertframenumber/%
+                    \ifnum\inserttotalframenumber>0 \inserttotalframenumber\else 1\fi\relax}%
+            \hss}}}
+% The title page of the theme with the title, the subtitle and the short bar under them centred; who and when stay at the bottom right.
+\setbeamertemplate{title page}{%
+    \global\splusnord@darktrue
+    \vspace{8em}
+    \begingroup
+    \begin{beamercolorbox}[sep=0pt,center]{title}
+        \usebeamerfont{title}\inserttitle\par
+        \ifx\insertsubtitle\@empty\else
+            \vskip0.25em
+            {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}
+        \fi
+    \end{beamercolorbox}
+    \vskip1em
+    \hbox to\linewidth{\hfill\color{nord10}\vrule width 3em height 3pt\hfill}
+    \vskip0pt plus 1filll
+    \begin{beamercolorbox}[sep=0pt,right]{author}
+        \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \vskip0.25em
+    \begin{beamercolorbox}[sep=0pt,right]{institute}
+        \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \vskip0.5em
+    \begin{beamercolorbox}[sep=0pt,right]{date}
+        \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}
+    \vskip\dimexpr\beamer@leftmargin-\footheight\relax
+    \endgroup}
+% The title of every light slide centred in its band (the theme sets it on the left).
+\setbeamertemplate{frametitle}{%
+    \ifsplusnord@dark\else
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0.1\paperheight,dp=0.05\paperheight,center]{frametitle}
+        \leftskip=\beamer@leftmargin plus 1fil
+        \rightskip=\beamer@rightmargin plus 1fil
+        \parfillskip=0pt
+        \usebeamerfont{frametitle}\insertframetitle\par
+    \end{beamercolorbox}%
+    \fi}
+\setbeamertemplate{footline}{%
+    \ifnum\insertframenumber=0 \ifsplusnord@dark\else\talk@footline\fi\else\talk@footline\fi}
+\makeatother
+
+\begin{document}
+
+\begin{frame}[noframenumbering]
+    \titlepage
+\end{frame}
+
+\input{sections/0-open}
+\input{sections/0c-focus}
+\input{sections/0d-corpora}
+\input{sections/0e-baselines}
+\input{sections/2-model}
+\input{sections/5-question}
+\input{sections/6-references}
+% out of the build: 3-styles, 4-result, 7-backup and the spare slides, in archive/slides_old/talk-spare/
+
+\end{document}

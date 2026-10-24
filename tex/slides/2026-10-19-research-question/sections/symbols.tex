@@ -1,0 +1,75 @@
+% !TeX root = ../talk.tex
+
+% The symbols of the methods, drawn in nord6 for a dark disc: centre x, y and a size factor (1 = a disc of radius 0.85 cm).
+\newcommand{\symgrammar}[3]{%
+    \pgfmathsetlengthmacro{\nsz}{6.5*#3}\pgfmathsetlengthmacro{\lw}{1.2*#3}
+    \begin{scope}[shift={(#1,#2)},scale=2.4*#3,every node/.style={circle,fill=nord6,minimum size=\nsz,inner sep=0pt}]
+        \node (r) at (0,0.17) {}; \node (a) at (-0.13,-0.03) {}; \node (b) at (0.13,-0.03) {};
+        \node (c) at (-0.2,-0.2) {}; \node (d) at (-0.06,-0.2) {};
+        \draw[nord6,line width=\lw] (r)--(a) (r)--(b) (a)--(c) (a)--(d);
+    \end{scope}}
+\newcommand{\symtick}[3]{%
+    \pgfmathsetlengthmacro{\lw}{3.2*#3}
+    \begin{scope}[shift={(#1,#2)},scale=2.4*#3]
+        \draw[nord6,line width=\lw,line cap=round,line join=round] (-0.15,0) -- (-0.04,-0.12) -- (0.17,0.14);
+    \end{scope}}
+\newcommand{\symbars}[3]{%
+    \begin{scope}[shift={(#1,#2)},scale=2.4*#3]
+        \fill[nord6] (-0.17,-0.15) rectangle (-0.09,-0.02);
+        \fill[nord6] (-0.04,-0.15) rectangle (0.04,0.07);
+        \fill[nord6] (0.09,-0.15) rectangle (0.17,0.17);
+    \end{scope}}
+% four steps of an automaton (rule 90) that draw a Sierpinski triangle
+\newcommand{\symautomata}[3]{%
+    \begin{scope}[shift={(#1,#2)},scale=2.4*#3]
+        \foreach \r/\cols in {0/{3},1/{2,4},2/{1,5},3/{0,2,4,6}}{
+            \foreach \c in \cols {\fill[nord6] ({(\c-3)*0.07-0.03},{0.13-\r*0.07-0.03}) rectangle ++(0.06,0.06);}}
+    \end{scope}}
+
+\newcommand{\symmarkov}[3]{%
+    \pgfmathsetlengthmacro{\nsz}{6*#3}\pgfmathsetlengthmacro{\lw}{1*#3}\pgfmathsetlengthmacro{\tip}{5*#3}
+    \begin{scope}[shift={(#1,#2)},scale=1.8*#3,every node/.style={circle,fill=nord6,minimum size=\nsz,inner sep=0pt},arr/.style={-{Stealth[length=\tip]},draw=nord6,line width=\lw}]
+        \node (a) at (0,0.29) {}; \node (b) at (-0.276,0.09) {}; \node (c) at (-0.17,-0.235) {}; \node (d) at (0.17,-0.235) {}; \node (e) at (0.276,0.09) {};
+        \draw[arr] (a) to[bend left=20] (b); \draw[arr] (b) to[bend left=20] (c); \draw[arr] (c) to[bend left=20] (d);
+        \draw[arr] (d) to[bend left=20] (e); \draw[arr] (e) to[bend left=20] (a);
+        \draw[arr] (b) -- (e);
+    \end{scope}}
+\newcommand{\symnn}[3]{%
+    \pgfmathsetlengthmacro{\nsz}{5*#3}\pgfmathsetlengthmacro{\lw}{0.7*#3}
+    \begin{scope}[shift={(#1,#2)},scale=2.4*#3,every node/.style={circle,fill=nord6,minimum size=\nsz,inner sep=0pt}]
+        \foreach \a in {-0.14,0,0.14}{\foreach \b in {-0.2,-0.07,0.07,0.2}{\draw[nord6,line width=\lw] (-0.17,\a)--(0,\b);}}
+        \foreach \b in {-0.2,-0.07,0.07,0.2}{\foreach \c in {-0.14,0,0.14}{\draw[nord6,line width=\lw] (0,\b)--(0.17,\c);}}
+        \foreach \a in {-0.14,0,0.14}{\node at (-0.17,\a) {}; \node at (0.17,\a) {};}
+        \foreach \b in {-0.2,-0.07,0.07,0.2}{\node at (0,\b) {};}
+    \end{scope}}
+
+
+% Each class: its symbol in a disc, its name and a generic description.
+% \openfocus is the class in evidence (0 to 3); every other class is faded with the theme's \fade. A negative value fades none.
+\def\openfocus{-1}
+\newcommand{\groupdraw}[4]{%
+    \fill[nord3] (#1*3.5,0) circle (0.85cm);
+    \csname #2\endcsname{#1*3.5}{0}{1}
+    \node[text=nord6,font=\normalsize\bfseries] at (#1*3.5,-1.3) {#3};
+    \node[text=nord4,font=\footnotesize,align=center,anchor=north] at (#1*3.5,-1.6) {#4};}
+\newcommand{\group}[4]{%
+    \ifnum\openfocus<0 \groupdraw{#1}{#2}{#3}{#4}\else
+    \ifnum#1=\openfocus \groupdraw{#1}{#2}{#3}{#4}\else
+    \fade[20]{\groupdraw{#1}{#2}{#3}{#4}}\fi\fi}
+
+% hypergraphs: small points, and regions that wrap sets of them at a fixed distance (archive/slides_old/fig/make_hypersymbol.py computes the
+% outlines). The regions are semi-transparent, so that where two of them overlap the colour is lighter: a point can belong
+% to several hyperedges.
+\newcommand{\symhyper}[3]{%
+    \pgfmathsetlengthmacro{\nsz}{4*#3}\pgfmathsetlengthmacro{\lw}{0.9*#3}
+    \begin{scope}[shift={(#1,#2)},scale=2.5*#3]
+        \tikzset{he/.style={draw=nord6,draw opacity=0.9,line width=\lw,fill=nord6,fill opacity=0.08}}
+        \draw[he] (-0.257,0.000) -- (-0.255,-0.012) -- (-0.251,-0.023) -- (-0.146,-0.205) -- (-0.138,-0.215) -- (-0.129,-0.223) -- (-0.117,-0.227) -- (-0.105,-0.229) -- (-0.093,-0.227) -- (-0.082,-0.223) -- (-0.072,-0.215) -- (-0.064,-0.205) -- (-0.060,-0.194) -- (-0.058,-0.182) -- (-0.058,0.182) -- (-0.060,0.194) -- (-0.064,0.205) -- (-0.072,0.215) -- (-0.081,0.223) -- (-0.093,0.227) -- (-0.105,0.229) -- (-0.117,0.227) -- (-0.128,0.223) -- (-0.138,0.215) -- (-0.146,0.205) -- (-0.251,0.024) -- (-0.255,0.012) -- cycle;
+        \draw[he] (0.058,-0.182) -- (0.060,-0.194) -- (0.064,-0.205) -- (0.072,-0.215) -- (0.082,-0.223) -- (0.093,-0.227) -- (0.105,-0.229) -- (0.117,-0.227) -- (0.129,-0.223) -- (0.138,-0.215) -- (0.146,-0.205) -- (0.251,-0.024) -- (0.255,-0.012) -- (0.257,0.000) -- (0.255,0.012) -- (0.251,0.023) -- (0.146,0.205) -- (0.138,0.215) -- (0.129,0.223) -- (0.117,0.227) -- (0.105,0.229) -- (0.093,0.227) -- (0.082,0.223) -- (0.072,0.215) -- (0.064,0.205) -- (0.060,0.194) -- (0.058,0.182) -- cycle;
+        \draw[he] (-0.257,0.000) -- (-0.255,-0.012) -- (-0.251,-0.023) -- (-0.243,-0.033) -- (-0.234,-0.041) -- (-0.222,-0.045) -- (-0.210,-0.047) -- (-0.000,-0.047) -- (0.210,-0.047) -- (0.222,-0.045) -- (0.233,-0.041) -- (0.243,-0.033) -- (0.251,-0.024) -- (0.255,-0.012) -- (0.257,0.000) -- (0.255,0.012) -- (0.251,0.023) -- (0.243,0.033) -- (0.233,0.041) -- (0.222,0.045) -- (0.210,0.047) -- (-0.210,0.047) -- (-0.222,0.045) -- (-0.233,0.041) -- (-0.243,0.033) -- (-0.251,0.024) -- (-0.255,0.012) -- cycle;
+        \foreach \x/\y in {0.000/0.000,0.210/0.000,0.105/0.182,-0.105/0.182,-0.210/0.000,-0.105/-0.182,0.105/-0.182}{\node[circle,fill=nord6,minimum size=\nsz,inner sep=0pt] at (\x,\y) {};}
+    \end{scope}}
+
+% a walker (Font Awesome 5 Free, solid; icons CC BY 4.0, font SIL OFL 1.1): the walk on the network
+\newcommand{\symwalk}[3]{%
+    \node[text=nord6,inner sep=0pt] at (#1,#2) {\scalebox{#3}{\fontsize{34}{34}\selectfont\faWalking}};}

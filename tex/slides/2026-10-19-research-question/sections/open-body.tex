@@ -1,0 +1,23 @@
+% !TeX root = ../talk.tex
+
+% The opening slide: the question, what the survey says about how the field is organised, and its four classes.
+% \openopts holds the options of the frame: t, plus noframenumbering on the second slide, which keeps the number of the first.
+% \openextra is the sentence under the four classes: empty on the first slide, the focus of the talk on the next.
+\edef\openbegin{\noexpand\begin{frame}[\openopts]}\openbegin
+    \darkslide
+    {\centering\huge\bfseries Which methods create music?\par}
+    \vspace{0.4cm}
+    {\centering\large The survey \cite{fernandez2013} groups the methods in four classes (with overlaps)\par}
+    \vfill
+    {\centering
+    \begin{tikzpicture}
+        \group{0}{symgrammar}{Symbolic AI}{musical knowledge\\written by hand\\(grammars, constraints)}
+        \group{1}{symnn}{Machine learning}{learned from a corpus,\\to imitate\\(Markov chains,\\neural networks)}
+        \group{2}{symbars}{Optimization}{melodies evolve\\towards a goal\\(evolutionary\\algorithms)}
+        \group{3}{symautomata}{Complex systems}{not AI, no musical\\knowledge\\(raw material\\for composers)}
+    \end{tikzpicture}\par}
+    \vfill
+    % a box of fixed height, so that the four classes stay in the same place with or without the sentence
+    \vbox to 3.2em{\hsize=\linewidth\centering\large \openextra\par\vss}
+    \vfill
+\end{frame}

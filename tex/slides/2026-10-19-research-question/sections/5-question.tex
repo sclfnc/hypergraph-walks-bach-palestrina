@@ -1,0 +1,38 @@
+% !TeX root = ../talk.tex
+
+\section{Question}
+
+\subsection{The question}
+% One slide in three steps: the question with the comparison; then the hypotheses; then the credits.
+\begin{frame}[t]
+    \darkslide
+    \vfill
+    {\centering\huge\bfseries Can a hypergraph walk imitate a musical style, and which parts does it need?\par}
+    \medskip
+    {\centering\large To answer, I compare it with a Markov chain \cite{allan2004} and a neural network \cite{hadjeres2017} on the same melodies, and I remove its parts one at a time.\par}
+    \uncover<2->{%
+    \medskip
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \begin{alertbox}{H0: the claim to reject}
+                \small\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000 On the measures, the walk is no closer to the author than the other two models.\par
+            \end{alertbox}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{examplebox}{H1: the claim to support}
+                \small\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000 On some measures it is closer, and on none is it farther than one spread of the author.\par
+            \end{examplebox}
+        \end{column}
+    \end{columns}}
+    \vfill
+    % the credits, set like footnotes and dimmer than the question: a rule as long as the slide, then two columns aligned with the boxes above
+    \uncover<3->{%
+    \noindent\hbox to\linewidth{\color{nord4!40!nord0}\hrulefill\hspace{0.7em}{\fontsize{6.5}{7.5}\selectfont\color{nord4!55!nord0}Credits}\hspace{0.7em}\color{nord4!40!nord0}\hrulefill}\par\vspace{6pt}
+    {\fontsize{6.5}{7.5}\selectfont\color{nord4!55!nord0}\renewcommand{\arraystretch}{1.0}\hyphenpenalty=10000\exhyphenpenalty=10000%
+    \begin{tabular}{@{}c@{\hspace{0.6em}}>{\raggedright\arraybackslash}p{\dimexpr(\textwidth-4\dimexpr1.5em+0.6em\relax-3\dimexpr2em\relax)/4\relax}@{\hspace{2em}}c@{\hspace{0.6em}}>{\raggedright\arraybackslash}p{\dimexpr(\textwidth-4\dimexpr1.5em+0.6em\relax-3\dimexpr2em\relax)/4\relax}@{\hspace{2em}}c@{\hspace{0.6em}}>{\raggedright\arraybackslash}p{\dimexpr(\textwidth-4\dimexpr1.5em+0.6em\relax-3\dimexpr2em\relax)/4\relax}@{\hspace{2em}}c@{\hspace{0.6em}}>{\raggedright\arraybackslash}p{\dimexpr(\textwidth-4\dimexpr1.5em+0.6em\relax-3\dimexpr2em\relax)/4\relax}@{}}
+        \simpleicon{latex} & \textbf{\LaTeX}\newline \href{https://www.latex-project.org}{\color{nord8!45!nord0}Beamer} slides\newline TikZ figures
+        & \simpleicon{github} & \textbf{Theme}\newline \href{https://github.com/sclfnc/SimplePlusNord-BeamerTheme}{\color{nord8!45!nord0}SimplePlusNord}\newline from \href{https://github.com/pm25/SimplePlus-BeamerTheme}{\color{nord8!45!nord0}SimplePlus}
+        & \simpleicon{fontawesome} & \textbf{Icons}\newline \href{https://fontawesome.com}{\color{nord8!45!nord0}Font Awesome}\newline \href{https://simpleicons.org}{\color{nord8!45!nord0}Simple Icons}
+        & \raisebox{-0.12em}{\includegraphics[height=1.0em]{claude}} & \textbf{AI-assistance}\newline \href{https://claude.com/product/claude-code}{\color{nord8!45!nord0}Claude Code}: slides, editing, literature review \\
+    \end{tabular}\par}}
+\end{frame}

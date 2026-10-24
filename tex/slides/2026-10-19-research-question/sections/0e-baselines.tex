@@ -1,0 +1,29 @@
+% !TeX root = ../talk.tex
+
+% Which baselines? Same layout as Which data?: the symbol of the method, its name, a line on its strength, one message on
+% its limit, and the reference for it.
+\begin{frame}{Which baselines?}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][3.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (1.2cm);\symmarkov{0}{0}{1.4}\end{tikzpicture}}\par
+            {\Large\bfseries Markov chains}\par
+            {\footnotesize\color{nord3}Simple, and they work \cite{hiller1959}\par}
+            \medskip
+            {\large Notes one at a time\par}
+            {\color{nord3}Pairwise models break chord rules\\2 to 10 times more often \cite{hadjeres2016}}
+        \end{column}
+        \begin{column}{0.06\textwidth}
+            \centering\textcolor{nord4}{\rule{0.6pt}{5.2cm}}
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][3.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (1.2cm);\symnn{0}{0}{1.4}\end{tikzpicture}}\par
+            {\Large\bfseries Neural networks}\par
+            {\footnotesize\color{nord3}More powerful \cite{hadjeres2017,liang2017,huang2017}\par}
+            \medskip
+            {\large Black boxes\par}
+            {\color{nord3}A deep model has not beaten a Markov\\system in listening tests \cite{yin2023}}
+        \end{column}
+    \end{columns}
+\end{frame}

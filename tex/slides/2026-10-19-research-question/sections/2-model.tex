@@ -1,0 +1,187 @@
+% !TeX root = ../talk.tex
+
+\section{Model}
+
+% The timeline of the papers. The axis is broken: the 1950s on the left, then 1988 to 2027 with more room.
+% \at sets \px, the x of a year. \dotonly: a dot. \paper: a dot, a stem and a label (y of the axis, year, height
+% of the label above (+) or below (-), its anchor, colour, label, shift of the dot). Bach is blue, the Renaissance
+% orange, earlier work on other music grey.
+\newcommand{\at}[1]{\pgfmathsetmacro{\px}{ifthenelse(#1<1970,2.4+0.35*(#1-1956),4.4+0.238*(#1-1988))}}
+\newcommand{\dotonly}[4]{\at{#2}\fill[#3] ({\px+#4},#1) circle (3.2pt);}
+\newcommand{\paper}[7]{\at{#2}%
+    \fill[#5] ({\px+#7},#1) circle (3.2pt);
+    \draw[nord4,line width=0.5pt] (\px,#1) -- (\px,{(#1)+(#3)});
+    \node[anchor=#4,font=\footnotesize,align=center,text=nord3,inner sep=1.5pt] at (\px,{(#1)+(#3)}) {#6};}
+
+\subsection{A bit of history}
+\begin{frame}{A bit of history}
+    \centering
+    \begin{tikzpicture}
+        \foreach \ay in {0,-1.4}{
+            \draw[nord3,line width=1pt] (2.2,\ay) -- (3.7,\ay);
+            \draw[nord3,line width=1pt] (4.2,\ay) -- (13.7,\ay);
+            \draw[nord3,line width=0.7pt] (3.8,\ay-0.12) -- (3.9,\ay+0.12) (4.0,\ay-0.12) -- (4.1,\ay+0.12);}
+        \fill[nord3] (0.95,0) circle (0.6cm);    \symmarkov{0.95}{0}{0.7}
+        \node[font=\footnotesize\bfseries,text=nord3,align=center] at (0.95,1.05) {Markov\\chains};
+        \fill[nord3] (0.95,-1.4) circle (0.6cm); \symnn{0.95}{-1.4}{0.7}
+        \node[font=\footnotesize\bfseries,text=nord3,align=center] at (0.95,-2.45) {Neural\\networks};
+        % Markov chains: the origins, then Bach and Palestrina
+        \paper{0}{1956}{0.4}{south}{nord3!45}{1956 \cite{pinkerton1956}}{0}
+        \paper{0}{1957}{1.0}{south}{nord3!45}{1957 \cite{brooks1957}}{0}
+        \paper{0}{1959}{1.6}{south}{nord3!45}{1959 \cite{hiller1959}}{0}
+        \paper{0}{1995}{0.4}{south}{nord10}{1995 \cite{conklin1995}}{0}
+        \paper{0}{2001}{1.0}{south}{nord12}{2001 \cite{farbood2001}}{0}
+        \paper{0}{2004}{0.4}{south}{nord10}{2004 \cite{allan2004}}{0}
+        \paper{0}{2016}{0.4}{south}{nord10}{2016 \cite{hadjeres2016}}{0}
+        \dotonly{0}{2018}{nord10}{-0.08}
+        \paper{0}{2018}{1.6}{south}{nord12}{2018 \cite{moore2018,padilla2018}}{0.08}
+        \paper{0}{2021}{1.0}{south}{nord10}{2021 \cite{zhu2021}}{0}
+        \paper{0}{2026}{0.4}{south}{nord10}{2026 \cite{berger2026}}{0}
+        % neural networks: nothing found on Palestrina
+        \dotonly{-1.4}{1989}{nord3!45}{-0.08}
+        \paper{-1.4}{1989}{-0.4}{north east}{nord10}{1989 \cite{todd1989,duff1989}}{0.08}
+        \paper{-1.4}{1991}{-1.0}{north}{nord10}{1991 \cite{hild1991}}{0}
+        \paper{-1.4}{1994}{-1.6}{north}{nord10}{1994 \cite{feulner1994}}{0}
+        \paper{-1.4}{1996}{-0.4}{north}{nord12}{1996 \cite{goldman1996}}{0}
+        \paper{-1.4}{2012}{-0.4}{north}{nord10}{2012 \cite{boulanger2012}}{0}
+        \paper{-1.4}{2017}{-1.0}{north}{nord10}{2017 \cite{hadjeres2017,liang2017,huang2017}}{0}
+        \paper{-1.4}{2019}{-1.6}{north}{nord10}{2019 \cite{huang2019,bachdoodle2019}}{0}
+        \node[anchor=north,font=\footnotesize\itshape,text=nord12] at (8.0,-2.4) {none found on Palestrina};
+    \end{tikzpicture}\par
+    \bigskip
+    {\small \textcolor{nord10}{\large$\bullet$} Bach \qquad \textcolor{nord12}{\large$\bullet$} Palestrina and the Renaissance \qquad \textcolor{nord3!45}{\large$\bullet$} earlier, other music\par}
+\end{frame}
+
+\subsection{The proposal}
+% Same layout as Which baselines?: on the left the hypergraph (the symbol), on the right the walk on it that writes the music.
+\begin{frame}{The proposal}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][3.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (1.2cm);\symhyper{0}{0}{1.4}\end{tikzpicture}}\par
+            {\Large\bfseries The hypergraph}\par
+            {\footnotesize\color{nord3}A hyperedge groups notes that belong together\par}
+            \medskip
+            {\large The corpus as a possibly\\annotated temporal hypergraph\footnotemark[1]\par}
+            {\color{nord3}Notes that sound together (a chord)\\or recur across time (a motif)}
+        \end{column}
+        \begin{column}{0.06\textwidth}
+            \centering\textcolor{nord4}{\rule{0.6pt}{5.2cm}}
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][3.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (1.2cm);\symwalk{0}{0}{1.05}\end{tikzpicture}}\par
+            {\Large\bfseries The walk}\par
+            {\footnotesize\color{nord3}Free, or guided by the melody\par}
+            \medskip
+            {\large Generates music\footnotemark[2]\par}
+            {\color{nord3}Any subset of the notes can steer a step:\\fixed, like the melody,\\or checked by rules}
+        \end{column}
+    \end{columns}
+    \footnotetext[1]{\scriptsize The annotation is a probability: how often a transition occurs in the corpus.}
+    \footnotetext[2]{\scriptsize Hypergraphs of pieces exist, to describe music \cite{coupette2023}; I found no generative use.}
+    \source{Bach chorales in the music21 corpus}
+\end{frame}
+
+\subsection{Against Markov chains}
+% The model against its rivals, what it adds and where the rival stops: no results here, only the design.
+\begin{frame}{Against Markov chains}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][2.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (0.85cm);\symmarkov{0}{0}{1}\end{tikzpicture}}\par
+            {\Large\bfseries Markov chains}\par
+            {\footnotesize\color{nord3}Where it stops\par}
+            \bigskip
+            {\large Notes one at a time,\\chord rules break \cite{hadjeres2016}\par}
+            \medskip
+            {\large Memory is an order\\chosen by hand\par}
+            \medskip
+            {\large One kind of dependence,\\the state before\par}
+        \end{column}
+        \begin{column}{0.06\textwidth}
+            \centering\textcolor{nord4}{\rule{0.6pt}{6.8cm}}
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][2.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (0.85cm);\symhyper{0}{0}{1}\fill[nord3] (2.0,0) circle (0.85cm);\symwalk{2.0}{0}{0.75}\end{tikzpicture}}\par
+            {\Large\bfseries Hypergraph \& Walk}\par
+            {\footnotesize\color{nord3}What it adds\par}
+            \bigskip
+            {\large A set of notes\\is one unit\par}
+            \medskip
+            {\large Memory lives\\in the hyperedges\par}
+            \medskip
+            {\large Many kinds of hyperedge,\\added or removed one at a time\par}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\subsection{Against neural networks}
+\begin{frame}{Against neural networks}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][2.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (0.85cm);\symnn{0}{0}{1}\end{tikzpicture}}\par
+            {\Large\bfseries Neural networks}\par
+            {\footnotesize\color{nord3}Where it stops\par}
+            \bigskip
+            {\large A black box,\\hard to inspect\par}
+            \medskip
+            {\large A change\\means retraining\par}
+            \medskip
+            {\large Style is spread\\over the weights\par}
+        \end{column}
+        \begin{column}{0.06\textwidth}
+            \centering\textcolor{nord4}{\rule{0.6pt}{6.8cm}}
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][2.0cm][t]{\linewidth}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (0.85cm);\symhyper{0}{0}{1}\fill[nord3] (2.0,0) circle (0.85cm);\symwalk{2.0}{0}{0.75}\end{tikzpicture}}\par
+            {\Large\bfseries Hypergraph \& Walk}\par
+            {\footnotesize\color{nord3}What it adds\par}
+            \bigskip
+            {\large Explorable, every step\\follows a counted link\par}
+            \medskip
+            {\large Static, a change\\means recounting\par}
+            \medskip
+            {\large Style is in the structure,\\and the walk is chosen to fit it\par}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\subsection{How to validate}
+% Three questions, in this order: is the result good (measures from the theory), does it sound right (blind listening, as in the
+% papers), why does it work (nulls and ablation). Copying is a later chapter: a similarity measure on the piece and on the music.
+% A row: the icon in a disc, the question and the test on the left, the details on the right.
+\newcommand{\validate}[4]{\parbox[c]{1.4cm}{\centering\begin{tikzpicture}\fill[nord3] (0,0) circle (0.6cm);\node[text=nord6,inner sep=0pt] at (0,0) {\scalebox{0.5}{\fontsize{34}{34}\selectfont#1}};\end{tikzpicture}}\hspace{0.2cm}%
+    \parbox[c]{0.30\linewidth}{\raggedright{\large\bfseries #2}\par {\footnotesize\color{nord4}#3\par}}\hfill
+    \parbox[c]{0.55\linewidth}{\raggedright\footnotesize #4}\par}
+\def\validopts{t}\def\validlit{1}\input{sections/validate-body}
+\def\validopts{t,noframenumbering}\def\validlit{2}\input{sections/validate-body}
+\def\validlit{3}\input{sections/validate-body}
+\def\validlit{4}\input{sections/validate-body}
+\def\validlit{0}\input{sections/validate-body}
+
+% out of the build, kept: the frame "Pairs are not enough"
+\iffalse
+\subsection{Why a hypergraph}
+\begin{frame}{Pairs are not enough}
+    \begin{table}
+        \begin{tabular}{l r r r}
+            \textbf{Free generation} & \textbf{Bach} & \textbf{Pairs of notes} & \textbf{Hypergraph} \\
+            \headrule
+            Simultaneities that are chords & 85\%  & 48\%  & 87\%  \\ \hline
+            Parallel fifths/octaves per 100 steps & 0.35 & 11.7 & 0.20 \\
+        \end{tabular}
+        \caption{40 pieces per generator, means per piece}
+    \end{table}
+    The note-pair walk fails on chords (z = $-6.3$) and on parallels (z = 14). The hypergraph is within half a standard deviation of Bach on every measure, largely by construction: every step is a transition Bach made.
+
+    \bigskip
+    \noindent\parbox[c]{0.62\linewidth}{\textbf{A parallel fifth} is the same interval twice in a row, here C--G then D--A. Bach avoids it.}\hfill
+    \parbox[c][1.5cm][c]{0.3\linewidth}{\centering{\smallmusicsize\begin{music}\parindent0pt\instrumentnumber{1}\setstaffs11\setclef1{0}\nobarnumbers
+    \startextract\NOtes\zq{c}\qu{g}\en\NOtes\zq{d}\qu{h}\en\zendextract\end{music}}}
+    \source{Bach chorales, 351 with four voices; notebook \texttt{harmonisation}}
+\end{frame}
+\fi

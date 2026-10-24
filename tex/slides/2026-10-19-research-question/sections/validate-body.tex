@@ -1,0 +1,19 @@
+% !TeX root = ../talk.tex
+
+% The four questions of the validation, the one in focus lit, the ones already covered half faded, the ones to come do not exist yet (they keep their place, invisible).
+% \validopts holds the options of the frame: t, plus noframenumbering on all but the first slide: the page number does not advance.
+% \validlit is the number of the row in focus, 0 for all the rows lit. A frame cannot be defined inside a macro, hence a file.
+\def\vrow#1#2{\ifnum\validlit=0 \validate#2\else\ifnum#1>\validlit \phantom{\validate#2}\else\ifnum#1<\validlit \fade[68]{\validate#2}\else\validate#2\fi\fi\fi}
+\edef\validbegin{\noexpand\begin{frame}[\validopts]}\validbegin
+    \darkslide
+    {\centering\huge\bfseries How to validate\par}
+    \vspace{0.4cm}
+    \vrow{1}{{\faClipboardCheck}{Is it good?}{Does it follow the rules and the style?}{Do the new pieces keep the properties of the corpus? As a distance in the author's own spread.}}
+    \vfill
+    \vrow{2}{{\faHeadphones}{Does it sound right?}{Most papers validate their results this way}{A blind listening test, like a Turing test. Listeners compare Bach and Palestrina with my model, a neural network and random choice \cite{hadjeres2017,yin2023}.}}
+    \vfill
+    \vrow{3}{{\faRandom}{Why does it work?}{Remove one part and observe the change}{I change the rules and add or remove annotations. The differences show what each part does.}}
+    \vfill
+    \vrow{4}{{\faCopy}{Is it copied?}{Does it repeat existing pieces?}{I measure the longest passage that the model copies from the corpus. How much is copied, and why, remains to be defined.}}
+    \vfill
+\end{frame}

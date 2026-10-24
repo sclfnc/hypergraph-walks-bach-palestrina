@@ -1,0 +1,36 @@
+%% SimplePlusNord: the theme, a light deck in the Nord colours.
+%% Fork of SimplePlus by Pin-Yen Huang (https://github.com/pm25/SimplePlus-BeamerTheme), Unlicense.
+%%
+%% Options:
+%%   overview       one dark overview slide, a column per section, right after the title slide
+%%   sectionslides  the same slide before every section, the running section lit and the
+%%                  others faded (it makes `overview' redundant)
+%%   nofragile      stop reading every frame as a fragile one (see the inner theme)
+%% Both overview options replace an \AtBeginSection of your own. All three are off by default.
+
+\mode<presentation>
+
+\newif\ifsplusnord@overview
+\newif\ifsplusnord@sectionslides
+\newif\ifsplusnord@nofragile
+\DeclareOptionBeamer{overview}{\splusnord@overviewtrue}
+\DeclareOptionBeamer{sectionslides}{\splusnord@sectionslidestrue}
+\DeclareOptionBeamer{nofragile}{\splusnord@nofragiletrue}
+\ProcessOptionsBeamer
+
+\usefonttheme{SimplePlusNord}
+\usecolortheme{SimplePlusNord}
+\useinnertheme{SimplePlusNord}
+
+% The generated slides are frames made inside a macro, which cannot be fragile: they use \frame
+% and not the environment. They are dark, like the title slide.
+\ifsplusnord@sectionslides
+    \AtBeginSection[]{\ifsplusnord@extra\else\frame{\darkslide\sectioncolumns[current]}\fi}
+\else
+    \ifsplusnord@overview
+        \AtBeginSection[]{%
+            \ifnum\value{section}=1 \frame{\darkslide\sectioncolumns}\fi}
+    \fi
+\fi
+
+\mode<all>

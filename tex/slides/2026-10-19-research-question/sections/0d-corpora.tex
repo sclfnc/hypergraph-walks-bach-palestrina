@@ -1,0 +1,33 @@
+% !TeX root = ../talk.tex
+
+% Which data? One message, in the scores themselves (MusiXTeX, figures/make_musix.py): in the chorale the notes of the four
+% voices fall together, in the mass each voice has its own line. A score, the name, the size of the corpus, one line on
+% the writing and one on the rule. The rest of the dataset (link, source, licence, who else uses it) is in the footnotes,
+% which carry only the numbers of the references.
+\begin{frame}{Which data?}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][3.0cm][t]{\linewidth}{\centering\scalebox{0.68}{\input{figures/chorale_musix}}}\par
+            {\Large\bfseries Bach chorales\footnotemark[1]}\par
+            {\footnotesize\color{nord3}371 chorales (351 four-voice)\par}
+            \medskip
+            {\large Voices move together\par}
+            {\color{nord3}No parallel fifths or octaves \cite{zhu2021}}
+        \end{column}
+        \begin{column}{0.06\textwidth}
+            \centering\textcolor{nord4}{\rule{0.6pt}{5.2cm}}
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \centering
+            \parbox[t][3.0cm][t]{\linewidth}{\centering\scalebox{0.68}{\input{figures/palestrina_musix}}}\par
+            {\Large\bfseries Palestrina\footnotemark[2]}\par
+            {\footnotesize\color{nord3}1,318 movements (487 four-voice)\par}
+            \medskip
+            {\large Each voice has its own line\par}
+            {\color{nord3}Dissonances on weak beats \cite{anders2019}}
+        \end{column}
+    \end{columns}
+    \footnotetext[1]{\scriptsize\href{https://github.com/cuthbertLab/music21/tree/master/music21/corpus/bach}{music21/corpus/bach}. Riemenschneider edition. Public domain music, music21 terms. Also in \cite{hadjeres2017,zhu2021}.}
+    \footnotetext[2]{\scriptsize\href{https://github.com/cuthbertLab/music21/tree/master/music21/corpus/palestrina}{music21/corpus/palestrina}. Le Opere Complete, enc. J. Miller, \copyright\ 2000; no licence text. Also in \cite{anders2019,padilla2018}.}
+\end{frame}

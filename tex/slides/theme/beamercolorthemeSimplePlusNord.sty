@@ -1,0 +1,60 @@
+%% SimplePlusNord: colour theme.
+%% Fork of SimplePlus by Pin-Yen Huang (https://github.com/pm25/SimplePlus-BeamerTheme), Unlicense.
+
+% The 16 Nord colours, from https://www.nordtheme.com/docs/colors-and-palettes (MIT):
+% nord0-3 dark greys, nord4-6 light greys, nord7-10 blues, nord11-15 the warm accents.
+\definecolor{nord0}{HTML}{2E3440}
+\definecolor{nord1}{HTML}{3B4252}
+\definecolor{nord2}{HTML}{434C5E}
+\definecolor{nord3}{HTML}{4C566A}
+\definecolor{nord4}{HTML}{D8DEE9}
+\definecolor{nord5}{HTML}{E5E9F0}
+\definecolor{nord6}{HTML}{ECEFF4}
+\definecolor{nord7}{HTML}{8FBCBB}
+\definecolor{nord8}{HTML}{88C0D0}
+\definecolor{nord9}{HTML}{81A1C1}
+\definecolor{nord10}{HTML}{5E81AC}
+\definecolor{nord11}{HTML}{BF616A}
+\definecolor{nord12}{HTML}{D08770}
+\definecolor{nord13}{HTML}{EBCB8B}
+\definecolor{nord14}{HTML}{A3BE8C}
+\definecolor{nord15}{HTML}{B48EAD}
+
+% Slide: dark text on the lightest grey. The blue accents (nord10, nord11) reach only 3.5:1 on
+% it, so they are kept for lines and shapes and never carry small text.
+\setbeamercolor{normal text}{fg=nord0,bg=nord6}
+\setbeamercolor{structure}{fg=nord0}
+
+% \alert cannot rely on hue (nord11 is 3.5:1 on the slide), so it is bold dark text
+\setbeamercolor{alerted text}{fg=nord0}
+
+% Title slide: light text on the dark slide (nord6 10.8:1, nord4 9.25:1)
+\setbeamercolor{title}{fg=nord6}
+\setbeamercolor{subtitle}{fg=nord4}
+\setbeamercolor{author}{fg=nord6}
+\setbeamercolor{institute}{fg=nord4}
+\setbeamercolor{date}{fg=nord4}
+\setbeamercolor{titlegraphic}{fg=nord4}
+
+% Every other slide: the title in a dark band
+\setbeamercolor{frametitle}{fg=nord6,bg=nord0}
+
+% Boxes: light title on a dark band. These are the only accents dark enough for it:
+% nord3, nord10 and nord11 give 6.4, 3.5 and 3.55:1, the others stay under 2.5:1.
+% The body is the slide colour with 5% of the title colour, so each box has its own tint.
+\setbeamercolor{block title}{fg=nord6,bg=nord3}
+\setbeamercolor{block body}{fg=nord0,bg=nord6!95!nord3}
+\setbeamercolor{block title example}{fg=nord6,bg=nord10}
+\setbeamercolor{block body example}{fg=nord0,bg=nord6!95!nord10}
+\setbeamercolor{block title alerted}{fg=nord6,bg=nord11}
+\setbeamercolor{block body alerted}{fg=nord0,bg=nord6!95!nord11}
+
+% Bottom of the slide, quiet on purpose: the current page in blue like the progress strip
+\setbeamercolor{page number current}{fg=nord10}
+\setbeamercolor{page number total}{fg=nord3}
+\setbeamercolor{source}{fg=nord3}
+
+% Captions and references
+\setbeamercolor{caption name}{fg=nord3}
+\setbeamercolor{bibliography entry location}{fg=nord3}
+\setbeamercolor{bibliography entry note}{fg=nord3}
