@@ -1,0 +1,46 @@
+# ── PDFs: build outputs, papers and the figures the notebooks write stay out ──
+*.pdf
+
+# ── LaTeX build artifacts ──
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.nav
+*.snm
+*.vrb
+*.xdv
+texput.*
+
+# ── Data ──
+data/
+*.pkl
+*.pickle
+*.gpickle
+
+# ── Python ──
+__pycache__/
+
+# ── Working notes: one .md per folder, named after it ──
+*.md
+!README.md
+
+# ── Assistant config ──
+CLAUDE.md
+.claude/
+
+# ── OS / editor cruft ──
+.directory
+.vscode/
+.DS_Store
+*~

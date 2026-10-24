@@ -1,0 +1,13 @@
+# Conda environment of the project, used first by notebooks/00_understanding.ipynb. Create: conda env create -f environment.yml
+# A package enters when a notebook uses it.
+name: alcna
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12.14
+  - music21=10.5.0
+  - ipykernel=7.4.0
+  - tqdm=4.70.1
+  - pandas=3.0.6
+  - matplotlib-base=3.11.2
+
