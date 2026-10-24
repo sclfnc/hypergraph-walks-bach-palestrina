@@ -1,16 +1,57 @@
+\newpage
+
 {\color{gray}\hrule}
 \begin{center}
 \section{Network Representation}
-% TODO One sentence: the corpus as an annotated temporal hypergraph, and why a hypergraph.
-\placeholder[1]{5}
+Each corpus becomes a weighted hypergraph whose hyperedges are the configurations of notes on which the style has rules, and a random walk on it writes new music.
 \bigskip
 \end{center}
 {\color{gray}\hrule}
 \begin{multicols}{2}
+\raggedcolumns  % white space at the foot of a column, instead of stretched paragraphs
 \subsection{Modeling}
 
-% TODO Nodes, hyperedges, weights, time and attributes, each defined: positions (voice, step) with a pitch, rest or hold as value; the line of a voice, the quadrilateral of two voices over two steps, the sonority of a step. Why higher order and not pairs, with the evidence. The implicit assumptions of the model. Basic characterization against a reference model. To be written after the rebuild of the hypergraph.
-\placeholder{6}
+A random walk moves on a graph that exists before the walk starts, so we build one weighted hypergraph per style from its corpus.
+
+\textbf{Nodes.} A node is a voice with a value: a transposed pitch (Section~\ref{sec:transformations}) or a rest. The voice is the type of its part: Soprano, Alto, Tenor, Bass and, in Palestrina, Baritone; Tenor~1 and Tenor~2 share the nodes of their type. The voice stays in the node because the rules of counterpoint hold between two parts \cite{fux1725} and because voices cross.
+
+\textbf{Hyperedges.} A hyperedge is an ordered tuple: the node of each of $v$ voices in each of $s$ consecutive cells of the grid, and $v \times s$ is its shape (Figure~\ref{fig:shapes}). Battiston et al. define a hyperedge as a set of nodes \cite{battiston2020}; we keep the order, as Hadjeres et al. do for their quadrilateral \cite{hadjeres2016}, because a set cannot tell a held note from a single note, or a move from the move back. Each hyperedge belongs to a class in one of two representations: the exact pitches, or the intervals from the lowest note of its first cell, which give one class in every register, as in multiple viewpoints \cite{witten1993}.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{hyperedge_shapes}
+\caption{A hyperedge of shape $v \times s$ joins $v$ voices over $s$ cells. BWV 40.6, bars 1--2, transposed; one cell per beat for readability, a quarter of a beat in the model.}
+\label{fig:shapes}
+\end{figure}
+\begin{table*}[t]
+\centering
+\small
+\caption{Hyperedge shapes, $v$ voices over $s$ cells: what each one is in the music, and the models that use it.}
+\label{tab:shapes}
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{9.0cm}@{}}
+\toprule
+Shape & In the music & In the literature \\
+\midrule
+$1 \times 2$ & the move of one voice & pairs of notes of one voice up to four beats apart\cite{hadjeres2016}; up to 30 notes apart, in a melody\cite{sakellariou2017} \\
+$1 \times 3$, $1 \times 4$ & a figure of one voice & melodic $n$-grams of orders 2 and 3\cite{witten1993} \\
+$2 \times 1$ & the interval between two voices & vertical pairs, and diagonal pairs up to two beats apart\cite{hadjeres2016} \\
+$2 \times 2$ & the motion of two voices & Fux's rules of motion between two parts\cite{fux1725}; evaluated, not modelled, by Hadjeres et al.\cite{hadjeres2016} \\
+$4 \times 1$ & a sonority & the chord as the hidden state of a hidden Markov model\cite{allan2004}; the four parts of a slice as one symbol\cite{whorley2013} \\
+$4 \times 2$ & a change of sonority & chord-to-chord transitions, one step per beat\cite{allan2004}; the interval of each voice to the previous slice\cite{conklin2002} \\
+$4 \times s$, $s \leq 6$ & a progression & $n$-grams of slices up to order 5\cite{whorley2013} \\
+$2 \times 3$, $3 \times 2$, \dots & & none in the sources we checked; measured here \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\textbf{Shapes in the literature.} Table~\ref{tab:shapes} lists the shapes, what each one is in the music, and the models that use them. Shape $2 \times 2$ is the smallest on which Fux's rules of motion are defined: they forbid reaching a perfect consonance by similar motion, and so forbid parallel fifths and octaves \cite{fux1725}. Pairs of notes miss these rules: in the pairwise model of Hadjeres et al., 61.5\% of the generated $2 \times 2$ configurations occur in the corpus, yet consecutive fifths and octaves are 2 to 10 times more frequent than in the corpus \cite{hadjeres2016}.
+
+\textbf{From the corpus to the hypergraph.} The grid turns each voice of a file into a sequence of nodes, one per cell, and every window of $v$ voices and $s$ cells belongs to one class; no window spans a passage that the corpus skips. Each window carries its fold and, for each voice, an attack flag that says whether the voice holds its note or attacks a new one, a distinction that Allan and Williams \cite{allan2004} and Whorley et al. \cite{whorley2013} also draw.
+
+\textbf{Weights.} The weight of a hyperedge is the support of its class, as in the mining of association rules \cite{agrawal1993}: the share of the windows of its shape that belong to the class, each window counted $1/k$ times for a file with $k$ versions (Section~\ref{sec:transformations}). A class that never occurs has no hyperedge.
+
+\textbf{The walk.} The walk moves one walker per voice: at each cell all walkers move together, and a move is more likely when the hyperedges it completes have a higher support. How the supports of overlapping hyperedges combine is still open.
+
+\textbf{Which shapes we keep.} A shape stays if a rule of the style is defined on it and if the corpus covers it. We measure every shape up to four voices and four cells, $2 \times 3$ and $3 \times 2$ included. The coverage of a shape is the share of the windows of a held-out fold whose class has a positive support in the other nine folds. We measure it on all windows and on the windows where at least one voice attacks, since held notes are easy to cover. The walk uses the smallest shapes with a rule and a coverage above a threshold fixed before the measures.
 
 \subsection{Transformations}
 \label{sec:transformations}
@@ -19,8 +60,10 @@
 
 \textbf{Grid.} The model reads time on a grid of equal cells, each a quarter of a beat long: a sixteenth note in Bach and an eighth note in Palestrina (Table~\ref{tab:grid}). Each cell holds the note that sounds at its end, whereas DeepBach \cite{hadjeres2017} takes the note that sounds at its start. The two rules differ only on the nine ornaments of the Bach soprano, where two thirty-second notes share one cell. On all nine, the end rule keeps a note of the chord and drops a note outside it, so it keeps the harmony and loses only the ornament.
 
-\textbf{Repeats and versions.} A passage under a repeat sign counts once, as written. Some files write a repeat out in full instead; when the two occurrences are identical, we skip the second one, which happens 26 times in Bach. Two occurrences that differ by at most 7.4\% of their notes are versions of one passage, and so are two files that differ that little. Each version enters with the weight $1/k$, where $k$ is the number of versions, so that the notes they share count once and each variant counts $1/k$. This is the sequence weighting of Henikoff and Henikoff \cite{henikoff1994}. The threshold of 7.4\% sits in a gap in the data, because the closest pair of files above it differs by 10.7\%. With these weights, the corpus that the model counts has 359 rows for 352 Bach chorales, which weigh as 333 pieces, and 1,181 rows for 1,179 Palestrina movements, which weigh as 1,178.
+\textbf{Repeats and versions.} A passage under a repeat sign counts once, as written. Some files write the repeated passage in full instead; when the two occurrences are identical, we skip the second one. Bach has 26 such repeats. Two occurrences that differ by at most 7.4\% of their notes are versions of one passage, and so are two files that differ that little. Each version enters with the weight $1/k$, where $k$ is the number of versions, so that the notes they share count once and each variant counts $1/k$. This is the sequence weighting of Henikoff and Henikoff \cite{henikoff1994}. The threshold of 7.4\% sits in a gap in the data: the closest pair of files above it differs by 10.7\%. With these weights, the corpus that the model counts has 359 rows for 352 Bach chorales, which weigh as 333 pieces, and 1,181 rows for 1,179 Palestrina movements, which weigh as 1,178.
 
 % TODO The measured impact of each transformation on the hypergraph, before and after; why no further transformation applies.
+\iffalse  % left out of the draft
 \placeholder{7}
+\fi
 \end{multicols}

@@ -19,7 +19,8 @@
 │   ├── 01_filtering.ipynb       filters the files and labels them (key, tonal type, transposition, copies)
 │   ├── 02_corpus.ipynb          repeats, weights, groups and folds of the corpus the model counts
 │   ├── 03_description.ipynb     length, voices, rhythm and texture of the filtered corpus
-│   ├── figures.py               the house style and plotting helpers that 00 and 03 share
+│   ├── 04_hypergraph.ipynb      from the corpus to the hypergraph (a draft: the figure of the hyperedge shapes)
+│   ├── figures.py               the house style and plotting helpers that 00, 03 and 04 share
 │   └── nord.json                plot colours (Nord palette)
 └── tex/                    everything LaTeX
     ├── references.bib      the one bibliography, shared by report and slides
