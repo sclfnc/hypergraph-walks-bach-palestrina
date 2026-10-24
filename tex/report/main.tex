@@ -1,0 +1,83 @@
+\documentclass[a4paper,12pt]{article}
+% Package to make citations superscrit with brackets
+\usepackage[super,square,sort&compress]{natbib}
+\setcitestyle{citesep={,}}  % [1,2], not [1;2]
+% Package to change margin size
+\usepackage{anysize}
+\marginsize{2cm}{2cm}{1cm}{2cm}
+% Package to make headers
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0pt}
+% Package for highligths
+\usepackage{soul}
+% Colors for the references links
+\usepackage[dvipsnames]{xcolor}
+% Package to link references
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=CadetBlue,
+    filecolor=CadetBlue,      
+    urlcolor=CadetBlue,
+}
+% Package for lorem ipsum
+\usepackage{lipsum}
+% Package for multicolumn
+\usepackage{multicol}
+% Package for removing paragraph identations
+\usepackage{parskip}
+\usepackage{graphicx}
+\graphicspath{{../figures/}}  % written by the notebooks, shared with the slides
+\usepackage{booktabs}
+\usepackage{colortbl}  % shaded cells in tables
+\usepackage{float}  % [H]: a table where it is written; multicol allows no column floats
+\usepackage{fontspec}
+\newfontfamily\notefont{Noto Music}  % note values in the tables
+\usepackage{caption}  % \captionof: a figure inside the columns
+\newcommand{\todo}[1]{{\color{gray}\itshape [#1]}}  % what the draft still lacks
+\newcommand{\placeholder}[2][1-2]{{\itshape\lipsum[#2][#1]}}  % dummy text where a section is still to be written
+\setlength\columnsep{18pt}
+% Sets bastract
+\renewenvironment{abstract}
+ {\par\noindent\textbf{\abstractname}\ \ignorespaces \\}
+ {\par\noindent\medskip}
+
+
+
+ 
+\begin{document}
+% Makes header
+\pagestyle{fancy}
+\thispagestyle{empty}
+\fancyhead[R]{\textit{Advanced Laboratory of Complex Network Analysis}}
+\fancyhead[L]{}
+% Makes footnotes with an asterisk
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\begin{center}
+\Large{\textbf{Higher-Order Interactions in Musical Style:\\ Imitating Bach and Palestrina with Hypergraph Walks}}
+\vspace{0.4cm}
+\normalsize
+\\ Francesco Secoli \\
+\vspace{0.1cm}
+\textit{University of Pisa, MSc in Data Science and Business Informatics}\\
+\url{https://github.com/sclfnc/hypergraph-walks-bach-palestrina}
+\medskip
+\normalsize
+\end{center}
+{\color{gray}\hrule}
+\vspace{0.4cm}
+\begin{abstract}
+\input{./abstract.tex}
+\end{abstract}
+{\color{gray}\hrule}
+\medskip
+\input{./sections/1_intro.tex}
+\input{./sections/2_section.tex}
+\input{./sections/3_section.tex}
+\input{./sections/4_section.tex}
+\input{./sections/5_section.tex}
+\input{./sections/6_conclusion.tex}
+\bibliographystyle{unsrt}  % numbered in order of first citation
+\bibliography{../references}  % the project's one bibliography, shared with the slides
+\end{document}

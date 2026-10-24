@@ -1,0 +1,26 @@
+{\color{gray}\hrule}
+\begin{center}
+\section{Network Representation}
+% TODO One sentence: the corpus as an annotated temporal hypergraph, and why a hypergraph.
+\placeholder[1]{5}
+\bigskip
+\end{center}
+{\color{gray}\hrule}
+\begin{multicols}{2}
+\subsection{Modeling}
+
+% TODO Nodes, hyperedges, weights, time and attributes, each defined: positions (voice, step) with a pitch, rest or hold as value; the line of a voice, the quadrilateral of two voices over two steps, the sonority of a step. Why higher order and not pairs, with the evidence. The implicit assumptions of the model. Basic characterization against a reference model. To be written after the rebuild of the hypergraph.
+\placeholder{6}
+
+\subsection{Transformations}
+\label{sec:transformations}
+
+\textbf{Transposition.} We move every file to the white keys, so that pieces in different keys add to the same counts. A Bach chorale moves so that its tonic falls on C if its key is major and on A if it is minor, as in BachBot \cite{liang2017}. In Palestrina, a movement in \emph{cantus mollis} moves down a fourth, into \emph{cantus durus}. The shift, the number of semitones that a file moves, is always the nearest one, at most six up or down, so that the voices stay within their range.
+
+\textbf{Grid.} The model reads time on a grid of equal cells, each a quarter of a beat long: a sixteenth note in Bach and an eighth note in Palestrina (Table~\ref{tab:grid}). Each cell holds the note that sounds at its end, whereas DeepBach \cite{hadjeres2017} takes the note that sounds at its start. The two rules differ only on the nine ornaments of the Bach soprano, where two thirty-second notes share one cell. On all nine, the end rule keeps a note of the chord and drops a note outside it, so it keeps the harmony and loses only the ornament.
+
+\textbf{Repeats and versions.} A passage under a repeat sign counts once, as written. Some files write a repeat out in full instead; when the two occurrences are identical, we skip the second one, which happens 26 times in Bach. Two occurrences that differ by at most 7.4\% of their notes are versions of one passage, and so are two files that differ that little. Each version enters with the weight $1/k$, where $k$ is the number of versions, so that the notes they share count once and each variant counts $1/k$. This is the sequence weighting of Henikoff and Henikoff \cite{henikoff1994}. The threshold of 7.4\% sits in a gap in the data, because the closest pair of files above it differs by 10.7\%. With these weights, the corpus that the model counts has 359 rows for 352 Bach chorales, which weigh as 333 pieces, and 1,181 rows for 1,179 Palestrina movements, which weigh as 1,178.
+
+% TODO The measured impact of each transformation on the hypergraph, before and after; why no further transformation applies.
+\placeholder{7}
+\end{multicols}

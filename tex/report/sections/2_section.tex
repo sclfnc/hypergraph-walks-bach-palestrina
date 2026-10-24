@@ -1,0 +1,106 @@
+{\color{gray}\hrule}
+\begin{center}
+\section{Dataset}
+The study uses 352 Bach chorales and 1,179 movements of Palestrina's masses, selected from the music21 corpus \cite{cuthbert2010} by six successive filters that make the data uniform.
+
+\bigskip
+\end{center}
+
+{\color{gray}\hrule}
+\begin{multicols}{2}
+\raggedcolumns  % white space at the foot of a column, instead of stretched paragraphs
+\subsection{Sources}
+
+Both corpora are distributed with music21 \cite{cuthbert2010, cuthbert2026music21}. The Bach corpus holds 413 files, nearly all chorales: Lutheran hymn tunes that Bach set for four voices. The Palestrina corpus holds 1,318 files, each a movement of a mass or a section of one, which John Miller encoded from the modern complete edition \cite{palestrina1939}.
+
+The scores hold no personal data, so the General Data Protection Regulation does not apply. The copyrights of the Palestrina files and of three Bach files reserve the rights to derivative electronic formats, so the repository holds code only (Section~\ref{sec:availability}).
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3.5pt}
+\caption{Files and notes removed by each filter, in order.}
+\label{tab:filters}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+& \multicolumn{2}{c}{Bach} & \multicolumn{2}{c}{Palestrina} \\
+\cmidrule(lr){2-3} \cmidrule(l){4-5}
+& files & notes & files & notes \\
+\midrule
+Raw dump & 413 & 112,010 & 1,318 & 717,031 \\
+\addlinespace
+\emph{Removed by} & & & & \\
+\quad meter & 51 & 16,071 & 115 & 25,832 \\
+\quad not a chorale & 1 & 598 & -- & -- \\
+\quad voices & 1 & 10,122 & -- & -- \\
+\quad bars & 6 & 1,690 & -- & -- \\
+\quad copies & 2 & 702 & 21 & 11,419 \\
+\quad off the grid & -- & -- & 3 & 1,726 \\
+\midrule
+Kept & 352 & 82,827 & 1,179 & 678,054 \\
+\quad share kept (\%) & 85.2 & 73.9 & 89.5 & 94.6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cleaning and Filtering}
+
+We filter both corpora so that one representation fits every piece: the same bar of four beats, the same time grid, and only the sung voices. This uniformity makes different pieces comparable and keeps the representation simple. Table~\ref{tab:filters} counts what each filter removes, in the order in which we apply them; the meter filter removes the most notes.
+
+\textbf{Meter.} A single bar of four beats gives every piece the same pattern of strong and weak beats, and one time grid that fits them all. A piece therefore stays only if it keeps a bar of four beats from start to end: 4/4 in Bach, where the beat is a quarter note, and 4/2 in Palestrina, where the beat is a half note. This filter removes mostly pieces in triple meter, with three beats to the bar, and the few pieces whose time signature changes along the way.
+
+\textbf{Not a chorale.} A Bach file stays only if it is a chorale. This filter removes the one file that is not: BWV 846, the first prelude of the Well-Tempered Clavier, a keyboard piece on two staves.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3.5pt}
+\caption{Files and notes on the grid, per grid step in the raw dump; shaded: chosen step.}
+\label{tab:grid}
+\begin{tabular}{@{}clcccc}
+\toprule
+& & \multicolumn{2}{c}{Bach (\%)} & \multicolumn{2}{c}{Palestrina (\%)} \\
+\cmidrule(lr){3-4} \cmidrule(l){5-6}
+\multicolumn{2}{@{}l}{Grid step} & files & notes & files & notes \\
+\midrule
+{\notefont\symbol{"1D162}} & thirty-second & 100.00 & 100.00 & 99.77 & 99.96 \\
+{\notefont\symbol{"1D161}} & sixteenth & \cellcolor{gray!18}98.06 & \cellcolor{gray!18}99.96 & 99.77 & 99.96 \\
+{\notefont\symbol{"1D160}} & eighth & 30.99 & 97.07 & \cellcolor{gray!18}99.77 & \cellcolor{gray!18}99.96 \\
+{\notefont\symbol{"1D15F}} & quarter & 1.21 & 76.46 & 19.73 & 99.32 \\
+{\notefont\symbol{"1D15E}} & half & 0.00 & 38.76 & 0.23 & 86.31 \\
+{\notefont\symbol{"1D15D}} & whole & 0.00 & 20.65 & 0.00 & 52.74 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Voices.} A Bach chorale keeps only its four sung voices, Soprano, Alto, Tenor and Bass: the instrumental parts of a cantata occur in only 32 chorales, and keeping them would give these chorales a texture that the others lack. This filter removes these parts, and the 32 chorales stay with their four voices. It removes one chorale whole, BWV 227.3, which has five sung voices with two sopranos: reducing it to four would drop a sung line. A Palestrina movement keeps all its voices, from three to eight, because one mass mixes movements for different numbers of voices: only 450 of the 1,203 movements have exactly four. Its voices take the same four types and a fifth, Baritone, and a type that occurs twice is numbered, as in Tenor~1 and Tenor~2. In both corpora a voice is the line written in its part, also where two voices cross.
+
+\textbf{Bars.} The pattern of strong and weak beats holds only if the downbeats stay four beats apart, from the first full bar to the last. In Bach, 266 chorales open with an upbeat and 206 split a bar in two, at a repeat sign or at the end of a phrase; these partial bars do no harm when their two pieces add up to four beats. In six chorales one bar has another length or lacks its other half, so every later downbeat falls on the wrong beat. This filter removes these six chorales whole: cutting out the irregular bar would remove music that Bach wrote. Palestrina's movements have neither upbeats nor split bars.
+
+\textbf{Copies.} Comparing the files note by note, in any key, we remove one file of each identical pair; the check finds all six duplicates listed by Dahn \cite{dahn2018} that the corpus contains. Twenty pieces remain in more than one version, differing by at most 7.4\% of their notes; Section~\ref{sec:transformations} weights them.
+
+\textbf{Off the grid.} This filter anticipates the model of Section~\ref{sec:transformations}, which reads time on a grid of equal cells. The coarsest grid that keeps 99.9\% of the notes of the raw dump is a quarter of the beat: a sixteenth note in Bach and an eighth note in Palestrina (Table~\ref{tab:grid}). In Bach, nine thirty-second notes of a written-out ornament fall between grid lines, and Section~\ref{sec:transformations} shows how the grid keeps them. In Palestrina, three movements hold triplet minims, which the grid would turn into a duple rhythm that Palestrina did not write; this filter removes these movements whole, so that the corpus holds pieces instead of fragments.
+
+\subsection{Keys and Tonal Types}
+\label{sec:keys}
+
+To move every piece to a common key (Section~\ref{sec:transformations}), we label each chorale with its key and each Palestrina movement with its tonal type.
+
+Of the 352 chorales, 304 take their key from an expert analysis of the When in Rome corpus \cite{gotham2023, gotham2026wir}, matched on the file name. The other 48 take their key from a fixed rule that combines five key profiles with the key signature. A Palestrina movement takes its tonal type in the sense of Powers \cite{powers1981}: the system, \emph{cantus durus} or \emph{cantus mollis} (no flat or one flat in the signature), and the final, the lowest note of the closing sonority. Powers adds a third marker, the cleffing, which the modern clefs of the files do not keep. The label names no mode, because a tonal type can stand for a mode without being that mode \cite{powers1981, mangani2025}.
+
+On the 285 chorales with an expert key that the rule covers, the rule gives the same transposition as the experts for 97.2\%, close to the 97.7\% on which When in Rome and a second expert analysis \cite{sears2023} agree.
+
+\subsection{Biases and Coverage}
+
+To bound the reach of our results, we state which music the corpus represents and which music the filters take out of it.
+
+The corpus holds two repertoires as later editors fixed them. The chorales come from a collection edited after Bach's death \cite{dahn2018}. Palestrina's 101 masses come from a modern edition with modern clefs and editorial barlines, so the grouping of beats into bars is the editor's. The corpus holds no other genre of either composer, such as Bach's arias or Palestrina's motets.
+
+In Palestrina, the meter filter does not remove files at random. It takes out 46 of the 111 files that set the Hosanna, against 8.7\% of all files, together with parts of the Credo such as \emph{Et resurrexit} and \emph{Et in Spiritum}; 63 of the 101 masses lose at least one file.
+
+Our results therefore hold for chorales and mass sections with four beats to the bar, as their editors barred them, and not for music in triple meter.
+
+\subsection{Length, Rhythm and Texture}
+
+We describe the filtered corpora by four properties: length, voices, rhythm and texture, that is, how many voices sing at once. Palestrina's movements have a median of 41 bars, against 14 for the chorales, and of 5 voices, against 4. Their voices also start fewer notes: a median of 0.59 per voice per beat, against 1.10 in Bach. Every voice sings 40.8\% of the time in Palestrina and 99.8\% in Bach, counting only the time when at least one voice sings. Rests, and voices that enter one after another, are therefore common in Palestrina and almost absent from Bach's chorales.
+\end{multicols}
