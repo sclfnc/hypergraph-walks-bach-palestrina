@@ -1,0 +1,17 @@
+{
+  "credit": "Nord, https://www.nordtheme.com; the hex values of slides/theme/beamercolorthemeSimplePlusNord.sty.",
+  "roles": {
+    "ink": "#2E3440",
+    "muted": "#4C566A",
+    "grid": "#D8DEE9"
+  },
+  "categorical": [
+    "#5E81AC",
+    "#D08770",
+    "#8FBCBB",
+    "#BF616A",
+    "#A3BE8C",
+    "#B48EAD",
+    "#EBCB8B"
+  ]
+}
