@@ -1,13 +1,6 @@
-{\color{gray}\hrule}
-\begin{center}
 \section{Hypotheses and Methodology}
-% TODO One sentence: what is tested, against what, and how it is validated.
+\label{sec:method}
 Every model counted from the corpus is tested on tunes and masses that its counts have not seen.
-\bigskip
-\end{center}
-{\color{gray}\hrule}
-\begin{multicols}{2}
-\iffalse  % left out of the draft: hypotheses and analytical approach not yet written
 \subsection{Hypotheses}
 
 % TODO H0 and H1 reworded: the fair test is against Allan and Williams and the count baselines, rebuilt on every fold; DeepBach is a declared reference that has seen the melodies. Directional or not, and why; operational definitions of every measure and threshold; the date on which the hypotheses were fixed.
@@ -17,7 +10,6 @@ Every model counted from the corpus is tested on tunes and masses that its count
 
 % TODO The walk, its parts and the ablation; the measures, each with its reference; parameters and how they were chosen; software and versions.
 \placeholder{10}
-\fi
 
 \subsection{Validation Approach}
 
@@ -26,7 +18,4 @@ Every number on how well a model counted from the corpus imitates a style comes 
 We assign the groups to the folds from the largest down, each to the fold with the fewest notes so far. Every fold then holds between 7,784 and 7,909 weighted notes in Bach, and between 67,270 and 70,043 in Palestrina. The assignment has no random part, so every run gives the same folds.
 
 % TODO The null model, what it preserves and what it randomizes; the test, its statistic, more than 30 null instances, alpha; multiple testing; effect sizes; robustness checks decided in advance, among them the repetition of the main result on five shuffled group splits with fixed seeds.
-\iffalse
 \placeholder{11}
-\fi
-\end{multicols}

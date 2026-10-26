@@ -1,84 +1,43 @@
-\documentclass[a4paper,12pt]{article}
-% Package to make citations superscrit with brackets
-\usepackage[super,square,sort&compress]{natbib}
-\setcitestyle{citesep={,}}  % [1,2], not [1;2]
-% Package to change margin size
-\usepackage{anysize}
-\marginsize{2cm}{2cm}{1cm}{2cm}
-% Package to make headers
-\usepackage{fancyhdr}
-\renewcommand{\headrulewidth}{0pt}
-% Package for highligths
-\usepackage{soul}
-% Colors for the references links
-\usepackage[dvipsnames]{xcolor}
-% Package to link references
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    citecolor=CadetBlue,
-    filecolor=CadetBlue,      
-    urlcolor=CadetBlue,
-}
+\documentclass[conference]{IEEEtran}  % US letter, the IEEE default
+% IEEE conference template (IEEEtran 1.8b), chosen on 2026-10-26; the course left the template free.
+% Built with pdfLaTeX, as IEEE builds it: latexmk -pdf main.tex
+\usepackage{cite}  % numbered citations in brackets, sorted and compressed: [1], [3]-[5]
+\usepackage{harmony}  % note values in the tables (\Vier, \Acht, ...), drawn with the MusiXTeX fonts
+\usepackage{xcolor}  % grey for the draft's todos and the shaded table cells
 % Package for lorem ipsum
 \usepackage{lipsum}
-% Package for multicolumn
-\usepackage{multicol}
-% Package for removing paragraph identations
-\usepackage{parskip}
 \usepackage{graphicx}
 \graphicspath{{../figures/}}  % written by the notebooks, shared with the slides
-\usepackage{booktabs}
 \usepackage{colortbl}  % shaded cells in tables
-\usepackage{float}  % [H]: a table where it is written; multicol allows no column floats
-\usepackage{fontspec}
-\newfontfamily\notefont{Noto Music}  % note values in the tables
-\usepackage{caption}  % \captionof: a figure inside the columns
 \usepackage{fontawesome5}  % the GitHub logo by the repository link: its glyphs sit on the text baseline
 \newcommand{\todo}[1]{{\color{gray}\itshape [#1]}}  % what the draft still lacks
 \newcommand{\placeholder}[2][1-2]{{\itshape\lipsum[#2][#1]}}  % dummy text where a section is still to be written
-\setlength\columnsep{18pt}
-% Sets bastract
-\renewenvironment{abstract}
- {\par\noindent\textbf{\abstractname}\ \ignorespaces \\}
- {\par\noindent\medskip}
+% Package to link references, loaded last
+\usepackage[hidelinks]{hyperref}  % links clickable but black, as in IEEE papers
 
-
-
- 
 \begin{document}
-% Makes header
-\pagestyle{fancy}
-\thispagestyle{empty}
-\fancyhead[R]{\textit{Advanced Laboratory of Complex Network Analysis}}
-\fancyhead[L]{}
-% Makes footnotes with an asterisk
-\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
-\begin{center}
-\Large{\textbf{Higher-Order Interactions in Musical Style:\\ Imitating Bach and Palestrina with Hypergraph Walks}}
-\vspace{0.4cm}
-\normalsize
-\\ Francesco Secoli \\
-\vspace{0.1cm}
-\textit{University of Pisa, MSc in Data Science and Business Informatics}\\
-\href{https://github.com/sclfnc/hypergraph-walks-bach-palestrina}{\faGithub\ GitHub repository}
-\medskip
-\normalsize
-\end{center}
-{\color{gray}\hrule}
-\vspace{0.4cm}
+\title{Higher-Order Interactions in Musical Style:\\ Imitating Bach's Chorales and Palestrina's Masses\\ with Random Walks on Hypergraphs}
+\author{\IEEEauthorblockN{Francesco Secoli}
+\IEEEauthorblockA{Advanced Laboratory of Complex Network Analysis\\
+University of Pisa, MSc in Data Science and Business Informatics\\
+Pisa, Italy\\
+\href{https://github.com/sclfnc/hypergraph-walks-bach-palestrina}{\faGithub\ GitHub repository}}}
+\maketitle
+
 \begin{abstract}
 \input{./abstract.tex}
 \end{abstract}
-{\color{gray}\hrule}
-\medskip
+
+\begin{IEEEkeywords}
+Bach chorales, higher-order interactions, hypergraphs, music generation, Palestrina, random walks
+\end{IEEEkeywords}
+
 \input{./sections/1_intro.tex}
 \input{./sections/2_section.tex}
 \input{./sections/3_section.tex}
 \input{./sections/4_section.tex}
-% \input{./sections/5_section.tex}  % left out of the draft: no results yet
+\input{./sections/5_section.tex}
 \input{./sections/6_conclusion.tex}
-\bibliographystyle{unsrt}  % numbered in order of first citation
+\bibliographystyle{IEEEtran}
 \bibliography{../references}  % the project's one bibliography, shared with the slides
 \end{document}

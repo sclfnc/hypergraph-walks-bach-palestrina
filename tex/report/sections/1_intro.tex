@@ -1,12 +1,22 @@
-\begin{multicols}{2}
-\tableofcontents
 \section{Introduction}
-% TODO Motivation: why style imitation by a counted model matters, with sources.
-\placeholder{1}
+% Draft of 2026-10-26, kept general on purpose. Works marked [S] or [A] in bib/literature_search_2026-10-15.md (search summary or abstract only) are cited here for general statements; read them before any precise claim.
 
-% TODO Related work, by idea: Markov models of harmonisation (Allan and Williams), neural harmonisers (DeepBach, BachBot), higher-order and network models of music (hypergraphs of Bach's sonatas, simplicial chord spaces), higher-order networks and walks on hypergraphs. Each closest work with its data, method and finding; the gap stated no stronger than the literature search.
-\placeholder{2}
+Algorithmic composition has used grammars, rule systems, evolutionary search, Markov chains and neural networks \cite{fernandez2013, herremans2017}, and the methods that learn from a corpus are used primarily to imitate a style \cite{fernandez2013}. The four-part harmonisation of Bach's chorales is a common test of this imitation. Expert systems write the rules of the style by hand \cite{ebcioglu1988}, statistical models count it in a corpus \cite{allan2004, whorley2016, zhu2021}, and neural networks learn it \cite{hild1991, hadjeres2017, liang2017, huang2017}. The families do not agree on what a better harmonisation is: one comparison favours the rule-based system \cite{phonamnuaisuk1999}, another finds the stochastic methods more interesting and less correct \cite{sikora2023}.
 
-% TODO Research question in one sentence; contributions as a short list, each verifiable in the results; one sentence of roadmap.
-\placeholder{3}
-\end{multicols}
+Statistical models of the task count pairs of notes or whole sonorities, while the rules of counterpoint bind a few voices over a few moments: what network science calls higher-order interactions \cite{battiston2020}. We ask whether a hypergraph walk can imitate a musical style, and which parts it needs. For two styles, Bach's chorales and Palestrina's masses, we build a hypergraph whose hyperedges are configurations of a few voices over a few moments, weighted by how often they occur, and a random walk on it writes the lower voices under a given melody. Removing one kind of hyperedge at a time shows which parts the imitation needs. The contributions are three:
+% TODO check each contribution against the results before the final version.
+\begin{itemize}
+\item a hypergraph of a polyphonic corpus whose hyperedges are the configurations on which rules of style are defined, each weighted by its support;
+\item a generation by random walk that uses only these counts, with no learned parameter;
+\item an ablation of the hyperedge shapes on two styles, more than a century apart.
+\end{itemize}
+
+\subsection{Related Work}
+
+The statistical models differ in what they count. Some count the change from one whole sonority to the next \cite{allan2004, whorley2013}; others count pairs of notes, across voices and across time \cite{hadjeres2016}. Pairs miss the rules that bind two voices over two moments: a pairwise model reproduces many of these configurations, yet writes consecutive fifths and octaves far more often than Bach \cite{hadjeres2016}. Whole sonorities, at the other end, recur too rarely to cover new music. The rules of counterpoint live in between, on a few voices over a few moments \cite{fux1725}.
+
+Network science has a language for these intermediate configurations: higher-order interactions, which join more than two nodes at once \cite{battiston2020}, with their own motifs and null models \cite{lotito2022}. Music has been read as a network of notes or chords linked in pairs \cite{kulkarni2024, dimarco2026}, and such networks have been walked to generate music \cite{liu2009}. Higher-order structures of music exist too: simplicial complexes of chords \cite{bigo2015, mrad2026} and hypergraphs whose hyperedges are the notes that sound together \cite{coupette2023}. They describe music, or transform a given piece \cite{bigo2015}. In the sources we checked, no model counts the higher-order configurations of a corpus and generates new music by walking on them.
+
+\subsection{Organisation of This Work}
+
+Section~\ref{sec:dataset} describes the two corpora and how we filter and label them, and Section~\ref{sec:representation} turns them into hypergraphs. The hypotheses and the method of the test follow in Section~\ref{sec:method}, the results in Section~\ref{sec:results}, and the conclusions in Section~\ref{sec:conclusions}.

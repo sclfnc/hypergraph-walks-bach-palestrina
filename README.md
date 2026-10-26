@@ -1,6 +1,6 @@
 # Higher-Order Interactions in Musical Style
 
-**Imitating Bach and Palestrina with hypergraph walks.** Final project for the course *Advanced Laboratory of Complex Network Analysis*, MSc in Data Science and Business Informatics, University of Pisa, academic year 2026/27. Author: Francesco Secoli.
+**Imitating Bach's chorales and Palestrina's masses with random walks on hypergraphs.** Final project for the course *Advanced Laboratory of Complex Network Analysis*, MSc in Data Science and Business Informatics, University of Pisa, academic year 2026/27. Author: Francesco Secoli.
 
 - **Question:** can a hypergraph walk imitate a musical style, and which parts does it need?
 - **Corpora:** 352 Bach chorales and 1,179 movements of Palestrina's masses, from the music21 corpus.
@@ -24,7 +24,7 @@
 │   └── nord.json                plot colours (Nord palette)
 └── tex/                    everything LaTeX
     ├── references.bib      the one bibliography, shared by report and slides
-    ├── report/             project report, from the course template (main.tex, abstract.tex, sections/)
+    ├── report/             project report in the IEEE conference format (main.tex, abstract.tex, sections/)
     └── slides/             SimplePlusNord theme, and one folder per presentation (date and purpose)
 ```
 
@@ -44,7 +44,7 @@ Then follow [notebooks/README.md](notebooks/README.md).
 From `tex/report/`:
 
 ```bash
-latexmk -lualatex main.tex
+latexmk -pdf main.tex
 ```
 
 ## AI assistance

@@ -17,8 +17,8 @@ colours = dict(zip(["bach", "palestrina"], palette["categorical"]))
 ink, muted, grid = (palette["roles"][k] for k in ("ink", "muted", "grid"))
 
 # Figures are drawn at their printed size, so LaTeX includes them unscaled and the text stays 8-9 pt
-COLUMN = (170 - 18 * 25.4 / 72.27) / 2 / 25.4   # one column of the report in inches: (A4 minus 2 cm margins, minus the 18 pt gap) / 2
-PAGE = 170 / 25.4   # the full text width in inches, for figures across both columns (figure* in LaTeX)
+COLUMN = 252 / 72.27   # one column of the report in inches: \columnwidth of IEEEtran (conference, US letter) is 252 pt
+PAGE = 516 / 72.27   # the full text width in inches, for figures across both columns (figure* in LaTeX): \textwidth is 516 pt
 for face in ["regular", "bold", "oblique"]:   # Latin Modern Sans, the font of the slides
     font_manager.fontManager.addfont(f"/usr/share/texmf/fonts/opentype/public/lm/lmsans10-{face}.otf")
 plt.rcParams.update({"font.family": "Latin Modern Sans",
