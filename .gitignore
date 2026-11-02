@@ -1,6 +1,6 @@
 # ── PDFs: build outputs, papers and the figures the notebooks write stay out, except those the report includes ──
 *.pdf
-!tex/figures/hyperedge_shapes.pdf
+!tex/figures/hyperedge_shapes_*.pdf
 
 # ── LaTeX build artifacts ──
 *.aux

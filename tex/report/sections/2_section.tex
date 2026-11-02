@@ -98,3 +98,24 @@ Our results therefore hold for chorales and mass sections with four beats to the
 \subsection{Length, Rhythm and Texture}
 
 We describe the filtered corpora by four properties: length, voices, rhythm and texture, that is, how many voices sing at once. Palestrina's movements have a median of 41 bars, against 14 for the chorales, and of 5 voices, against 4. Their voices also start fewer notes: a median of 0.59 per voice per beat, against 1.10 in Bach. Every voice sings 40.8\% of the time in Palestrina and 99.8\% in Bach, counting only the time when at least one voice sings. Rests, and voices that enter one after another, are therefore common in Palestrina and almost absent from Bach's chorales.
+
+
+% ----
+% Si prende il 90% da tutti (repeated-holdout)
+% Rimozione "copie" prima/dopo generazione?
+% Ogni generazione è validata su Bach "originale".
+% Sul corpus mantenuto 90% si stabilisce una soglia di similarità basata sull'elbow e in base a quella si sceglie una soglia per cui due pezzi sono reputati simili, in quel caso si fondono distribuendo le probabilità.
+% da qui si crea l'ipergrafo.
+% la soglia di simialrità è sensibile al corpus individuato
+% Si guardano le distanze
+% Si studiano le proprietà degli elbow e dei risultati.
+% Faccio random sampling un tot di volte, genero la soglia di similairtà stampo la distribuzione, se nonscoppia da 20% a 2%, ok, è un metodo adeguatamente valido. Sperabilmente c'è un salto che è sempre basso nella similarità. Plausibilmente stiamo parlando del sesso degli angeli rispetto alla dimensione del corpus.
+
+% A questo punto, abbiamo i corpus, se ne confrontano le metriche come ipergrafo (con e senza ablation sugli iperarchi)
+% Finito questo step si riesce a trovare un nucleus degno di tal nome per ciò che dobbiamo fare per Bach e per Palestrina.
+% Si può generare, quali metriche di validazione? Vanno determinate PRIMA di svolgere il lavoro.
+% Si deve scegliere anche un NULL model decente.x
+
+
+
+

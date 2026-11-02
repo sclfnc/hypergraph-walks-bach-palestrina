@@ -17,5 +17,7 @@ Every number on how well a model counted from the corpus imitates a style comes 
 
 We assign the groups to the folds from the largest down, each to the fold with the fewest notes so far. Every fold then holds between 7,784 and 7,909 weighted notes in Bach, and between 67,270 and 70,043 in Palestrina. The assignment has no random part, so every run gives the same folds.
 
-% TODO The null model, what it preserves and what it randomizes; the test, its statistic, more than 30 null instances, alpha; multiple testing; effect sizes; robustness checks decided in advance, among them the repetition of the main result on five shuffled group splits with fixed seeds.
+These ten folds are one partition among many, and cross-validation has no unbiased estimate of its own variance \cite{bengio2004}. We therefore repeat the cross-validation on five more assignments of the groups to the folds, drawn at random with fixed seeds, and compare two models only on the same folds. A difference between two models is tested with the t-test for repeated cross-validation, corrected for the overlap of the training sets \cite{nadeau2003, bouckaert2004}. The correction is an approximation: it assumes that the estimates of two folds correlate as much as the size of a test set to the size of a training set.
+
+% TODO The null model, what it preserves and what it randomizes; the test, its statistic, more than 30 null instances, alpha; multiple testing; effect sizes; robustness checks decided in advance.
 \placeholder{11}

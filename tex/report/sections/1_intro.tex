@@ -1,9 +1,16 @@
 \section{Introduction}
+% Un po' debole su Palestrina, da rafforzare
 % Draft of 2026-10-26, kept general on purpose. Works marked [S] or [A] in bib/literature_search_2026-10-15.md (search summary or abstract only) are cited here for general statements; read them before any precise claim.
 
-Algorithmic composition has used grammars, rule systems, evolutionary search, Markov chains and neural networks \cite{fernandez2013, herremans2017}, and the methods that learn from a corpus are used primarily to imitate a style \cite{fernandez2013}. The four-part harmonisation of Bach's chorales is a common test of this imitation. Expert systems write the rules of the style by hand \cite{ebcioglu1988}, statistical models count it in a corpus \cite{allan2004, whorley2016, zhu2021}, and neural networks learn it \cite{hild1991, hadjeres2017, liang2017, huang2017}. The families do not agree on what a better harmonisation is: one comparison favours the rule-based system \cite{phonamnuaisuk1999}, another finds the stochastic methods more interesting and less correct \cite{sikora2023}.
+% Migliorare la narrazione: 
 
-Statistical models of the task count pairs of notes or whole sonorities, while the rules of counterpoint bind a few voices over a few moments: what network science calls higher-order interactions \cite{battiston2020}. We ask whether a hypergraph walk can imitate a musical style, and which parts it needs. For two styles, Bach's chorales and Palestrina's masses, we build a hypergraph whose hyperedges are configurations of a few voices over a few moments, weighted by how often they occur, and a random walk on it writes the lower voices under a given melody. Removing one kind of hyperedge at a time shows which parts the imitation needs. The contributions are three:
+Algorithmic composition has used grammars, rule systems, evolutionary search, Markov chains and neural networks \cite{fernandez2013, herremans2017}, and the methods that learn from a corpus are used primarily to imitate a style \cite{fernandez2013}. The four-part harmonisation of Bach's chorales is a common test of this imitation. Expert systems write the rules of the style by hand \cite{ebcioglu1988}, statistical models count it in a corpus \cite{allan2004, whorley2016, zhu2021}, and neural networks learn it \cite{hild1991, hadjeres2017, liang2017, huang2017}. 
+% semplificare e dichiarare risultati contrastanti in letteratura con una citazione unificante
+The families do not agree on what a better harmonisation is: one comparison favours the rule-based system \cite{phonamnuaisuk1999}, another finds the stochastic methods more interesting and less correct \cite{sikora2023}.
+
+Statistical models of the task count pairs of notes or whole sonorities, while the rules of counterpoint bind a few voices over a few moments: what network science calls higher-order interactions \cite{battiston2020}. 
+% Introdurre meglio e giustificare meglio l'esplorazione, discutendone con l'utente.
+We ask whether a hypergraph walk can imitate a musical style, and which parts it needs. For two styles, Bach's chorales and Palestrina's masses, we build a hypergraph whose hyperedges are configurations of a few voices over a few moments, weighted by how often they occur, and a random walk on it writes the lower voices under a given melody. Removing one kind of hyperedge at a time shows which parts the imitation needs. The contributions are three:
 % TODO check each contribution against the results before the final version.
 \begin{itemize}
 \item a hypergraph of a polyphonic corpus whose hyperedges are the configurations on which rules of style are defined, each weighted by its support;
