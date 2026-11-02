@@ -4,7 +4,7 @@
 
 - **Question:** can a hypergraph walk imitate a musical style, and which parts does it need?
 - **Corpora:** 352 Bach chorales and 1,179 movements of Palestrina's masses, from the music21 corpus.
-- **Status:** the corpus pipeline (notebooks 00 to 03) is complete; the model and the report are in progress.
+- **Status:** the corpus pipeline and the hypergraph (notebooks 00 to 04) are built; the walk and the report are in progress.
 
 ## Repository structure
 
@@ -19,16 +19,17 @@
 │   ├── 01_filtering.ipynb       filters the files and labels them (key, tonal type, transposition, copies)
 │   ├── 02_corpus.ipynb          repeats, weights, groups and folds of the corpus the model counts
 │   ├── 03_description.ipynb     length, voices, rhythm and texture of the filtered corpus
-│   ├── 04_hypergraph.ipynb      from the corpus to the hypergraph (a draft: the figure of the hyperedge shapes)
-│   ├── figures.py               the house style and plotting helpers that 00, 03 and 04 share
+│   ├── 04_hypergraph.ipynb      from the corpus to the hypergraph: grid, nodes, hyperedges, weights, the model's shapes
+│   ├── figures.py               the house style and plotting helpers that the notebooks share
 │   └── nord.json                plot colours (Nord palette)
 └── tex/                    everything LaTeX
+    ├── figures/            the three panels of the report's Figure 1, written by notebook 04
     ├── references.bib      the one bibliography, shared by report and slides
     ├── report/             project report in the IEEE conference format (main.tex, abstract.tex, sections/)
     └── slides/             SimplePlusNord theme, and one folder per presentation (date and purpose)
 ```
 
-The data are not in the repository: `00_understanding` and `01_filtering` download them into `data/`. The figures the notebooks draw go to `tex/figures/`, also outside the repository.
+The data are not in the repository: `00_understanding` and `01_filtering` download them into `data/`. The figures the notebooks draw go to `tex/figures/`, also outside the repository, except the panels of Figure 1, which the report includes.
 
 ## Run the notebooks
 

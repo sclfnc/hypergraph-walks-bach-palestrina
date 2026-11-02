@@ -5,12 +5,12 @@ Run them in order, with the `alcna` kernel (`../environment.yml`). Each one read
 | Notebook | Reads | Writes |
 |---|---|---|
 | `00_understanding.ipynb` | the music21 corpus on GitHub (tag `v10.5.0`) | `data/raw/bach/`, `data/raw/palestrina/`, `data/interim/00_pieces.csv`, `tex/figures/00_*.pdf` |
-| `01_filtering.ipynb` | `00_pieces.csv`; When in Rome on GitHub (fixed commit) | `data/raw/when_in_rome/`, `data/interim/01_corpus.csv` |
-| `02_corpus.ipynb` | `01_corpus.csv` | `data/interim/02_corpus.csv` |
+| `01_filtering.ipynb` | `00_pieces.csv`; When in Rome on GitHub (fixed commit) | `data/raw/when_in_rome/`, `data/interim/01_corpus.csv`, `tex/figures/01_copies.pdf` |
+| `02_corpus.ipynb` | `01_corpus.csv` | `data/interim/02_corpus.csv`, `tex/figures/02_repeats.pdf` |
 | `03_description.ipynb` | `00_pieces.csv`, `01_corpus.csv` | `tex/figures/03_*.pdf` |
-| `04_hypergraph.ipynb` | `01_corpus.csv`, the raw scores | `tex/figures/hyperedge_shapes.pdf`; a draft, only the figure runs |
+| `04_hypergraph.ipynb` | `00_pieces.csv`, `01_corpus.csv`, `02_corpus.csv`, the raw scores | `tex/figures/hyperedge_shapes_<a, b, c>.pdf`, `data/interim/04_hypergraph_bach.npz`, `data/interim/04_hypergraph_palestrina.npz` (the model's shapes; peak about 7 GB) |
 
-`nord.json` holds the plot colours; `figures.py` the house style and the plotting helpers that 00, 03 and 04 share.
+`nord.json` holds the plot colours; `figures.py` the house style and the plotting helpers that the notebooks share.
 
 The notebooks are kept without outputs. To run one headless and keep its outputs elsewhere, from this folder:
 
@@ -18,4 +18,4 @@ The notebooks are kept without outputs. To run one headless and keep its outputs
 jupyter nbconvert --to notebook --execute --ExecutePreprocessor.kernel_name=alcna --output-dir <folder> 01_filtering.ipynb
 ```
 
-`alcna` has no `nbconvert`: run the command from an environment that has it. On a warm cache, 00 takes about 35 s, 01 about 50 s, 02 about 20 s, 03 about 10 s.
+`alcna` has no `nbconvert`: run the command from an environment that has it. On a warm cache, 00 takes about 35 s, 01 about 50 s, 02 about 20 s, 03 about 10 s, 04 about 5 min 10 s.
