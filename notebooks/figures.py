@@ -115,3 +115,29 @@ def stacked(shares, xlabel, caption, labels=None, *, stem):
     save(fig, stem)
     plt.show()
     print(caption)
+
+
+def distances(table, column, threshold, xlabel, caption, *, stem):
+    """One row of dots per corpus, a dot for each pair of `table` at its value of `column`, and the threshold as a dashed line."""
+    jitter = np.random.default_rng(0)   # fixed, so the figure is the same at every run
+    fig, ax = plt.subplots(figsize=(COLUMN, 1.25))
+    for y, name in zip([1, 0], colours):   # Bach on top, Palestrina below, as in the other figures
+        x = table.loc[table["corpus"] == name, column].to_numpy()
+        ax.scatter(x, y + jitter.uniform(-0.2, 0.2, len(x)), s=10, color=to_rgba(colours[name], 0.35), edgecolor=colours[name],
+                   linewidth=0.6, label=name.capitalize())
+    ax.axvline(threshold, color=muted, linewidth=0.8, linestyle=(0, (2, 2)), dash_capstyle="round")
+    ax.set_yticks([])
+    ax.set_ylim(-0.45, 1.45)
+    ax.set_xlim(-1.5, None)
+    ax.xaxis.set_major_formatter(lambda v, _: f"{v:g}%")
+    ax.set_xlabel(xlabel, color=muted)
+    ax.grid(axis="x", color=to_rgba(grid, 0.6), linewidth=0.4)
+    ax.set_axisbelow(True)
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.spines["bottom"].set_color(muted)
+    ax.tick_params(colors=muted, length=0)
+    ax.legend(loc="lower right", bbox_to_anchor=(1, 1), ncol=2, frameon=False, labelcolor=ink, handletextpad=0.1, borderaxespad=0, columnspacing=0.8)
+    fig.tight_layout(pad=0.3)
+    save(fig, stem)
+    plt.show()
+    print(caption)
